@@ -1,0 +1,466 @@
+FUNDAMENTAL CONCURRENCY
+
+#### CONCURRENCY
+- concurrency is a concept
+- how a program, or algorithm, is structured
+- there are different ways of executing concurrent code
+
+- an algorithm is concurrent when it is structured into several sub parts that can be executed out of order 
+without affecting the outcome
+	
+	- code section are not necessarily executed in specific order
+	- the final result remain the same
+
+#sequential algorithm
+
+sum = sum([x1,x2,x3,xN])
+count = len([x1,x2,z3,xN])
+
+avg = sum/count
+
+
+#concurrent algorithm
+
+- splits list into chunks
+
+ex. we got 3 chucnks now 
+
+
+x1,xj -> sum1,count1 | x1, xk -> sum1,count1  | x1,xl -> sum1,count1
+
+avg = sum1 + sum2 + sum3
+	 -------------------
+	 count1 + count2 + count3
+
+
+- this are called concurent fragment
+- no matter the order of the execution of the concurrent fragments
+the final result is the same
+
+#### HOW ARE CONCURENT FRAGMENTS BEING EXECUTED
+
+
+#Parallel execution
+- they can run parallel in cpu1,cpu2,cpu3
+- it requires multiple cpu and cores
+- the code executor must be able to take advantage of multiple CPU/cores
+
+
+#Time-Sliced Execution
+- we can run it in a single CPU
+- each fragment can run in a certain amount of time then switch until it finishes all the fragments
+- every time execution is paused, state must be saved somewhere
+- when a fragment that was paused was resume the save state must be loaded
+- the technique above is called context switch
+
+
+### PROCESSES
+
+- think of a process as an instance executing in your OS
+	- procceses run concurrently
+		- maybe they run parallel
+		- or interleaving
+
+- each process runs independently
+- memory is not shared between proceses
+
+- possible states
+	- running 
+		- has access and currently running
+	- ready
+		- could run, if it had CPU
+	- blocked
+		- waiting for something
+
+
+
+### THREADS
+- each process is executed using on or more threads 
+	- always start with one thread called main thred
+		- it has global data(shared state)
+		- concurent code can be executed using multiple threads
+		- multihread/ 
+
+
+		- threads have acces to shared resoursces in the proccess(global data, open files)
+		- threads can also have ther own private resources
+			- sometimes called thread-local data
+
+		- threads can run in parallel or interleaving 
+
+- we need to consider if the executor is taking advantage of the CPU/core
+
+
+
+
+### How does this process run?
+
+- os has a piece of software called the scheduler
+- it decides when to run threads
+(remember, multiple,running process results in multiple threads, even if each process is single-threaded)
+- schedular runs,pauases, restarts
+- schedular decides when to do that
+
+- when a thread is paused, the state must be save
+- when a thread is resumed, the state must be restored
+- context switching has aperfomance penalty
+
+- when a scheduler pause a threads and resume a threads we say it preempts the thread
+
+#MULTITASKING
+- multiple things running concurrently
+- could be multiple process
+- could be multiple threads
+
+
+
+
+
+
+
+
+
+#PTHON GLOBAL INTERPRETER LOCK ( GIL )
+
+- c python only allows interleave/time-slicede running of multiple threads
+- even if we creaate multi threads, only one thread is allowed to run at atime 
+	- no parallelism
+	- does not take advantage
+
+
+	- most python apps writtne single threaded handedly
+	- there have been atempts to remove the GIL ( but non have been successfull accepted yet)
+
+
+#ANOTHER approach to multitasking
+
+
+- another approach is to write code where we explicitly say when ( or where ) a task can be
+interrupeted to allow another task to run concurrently
+	- cooperative multitasking ( we are waiting for some of the I/O operation to complete)
+		- we dont allow os to preempt
+		- very useful if a code fragment is waiting for an external resouse to complete and return something
+		- waiting for database
+		- file to be OPEN and read by OS
+		- waiting for API
+		- waiting for another proccess to return something
+
+
+
+
+#WORKLOADS
+- what kind of work is the process dealing with the majority of time?
+- spends a lot of time running computation -> CPU WORKLOAD
+- spends a lot of waiting for I/0 -> I/0 workload
+- most of workloads are mixed
+- if main bottleneck is CPU  or IO-> CPU BOUND/ I/O BOUND
+
+
+
+
+#CPU BOUND workloads in python - threading
+- assuming its a method of function that do alot of computation
+- multithreading in python is gonna degrade the performance because of the GIL
+- instead of multithreading lets do multiple processes!
+	- python calls this multiprocess
+		- process state is not shared and independent
+
+
+- main application can spawn multi processeses
+	
+	#this method below are called marshalling/ unmarshalling | serialization/desirialization
+	- can pass data to a spawned to proccess
+	- can get results bac from process
+
+	- not scalable -> limited to the CPU/cores of a single machine
+
+		ex. imagine if you create more processes more than the cpu core 
+		let say 2 cpu coress running 3 process 1 core will run it time/sliced/interleaving
+
+
+		so since 1 machine is not enoough you need to write complex code to scale accroess multiple machine ( workers and queue, locks )
+
+
+
+#I/0 BOUND workloads in python - threading
+
+- interslicing is perfect for this
+
+
+
+#MULTITHREADING DANGES
+
+- writing multhitreaded code is difficult
+	- preemptive - we dont know exactly when a thread will be interrupted
+	- have to be careful with shared state - easy to run into problems
+
+
+
+#### COOPERATIVE MULTITASKING
+
+- cooperative can help with i/0 bound workload
+
+- is there a simplere safe alternative for writing concurrent for i/0 bound workfkloads
+	- the answer is asynchronouse programming 
+	- it is a form of cooperative multi tasking
+
+
+
+### PYTHON ASYNC PROGRAMMING
+
+- offers an easier and alternative to multithreading
+- performance improvements for i/o bound workloads
+
+- unlike threading, we have toe explicitly let python know how different fragments can interrupt each oother and work
+- safer than preempttive multitasking
+
+cons
+- adds a bit of complexitiy
+- does required 3rd party library 
+
+
+
+### Asyncio event loop
+
+
+- register concurrent code fragment that run code. intermittently inidcate that particulate line of code would be a good time to interrupt
+	- these calles to async functions are called task 
+
+	- python creates an event loop - single threaded
+	- it runs one task at a time
+	- the event loop gets control back, start running another task, until that task indicates it is ready to be switched
+
+
+- when a task run it is executing code. and at some point yeild controls back to event loop
+- function or task that run and do not yield control back before they have compleeted, are called blocking
+
+
+
+
+#MULTIPROCESSING
+- no shared data
+- passing data is expensive | via marshall unmarshall
+- good for CPU BOUND workloads
+
+#MULTITHREADING
+- shared data
+- care needed for shared data
+- preemptive
+
+- use full for multitasking that have nothing.
+- if you dont have certian async equivalent you can do this
+
+#ASTYNC
+
+- shared data
+- care needed for shared data
+- cooperative
+- useful for performance i/o 
+
+
+
+ex. you have main application for listening events
+you can separate the thread. for CPU bound. then other is I/O bound
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
