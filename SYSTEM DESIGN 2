@@ -1,0 +1,279 @@
+#COMPONENT OF SYSTEM DESIGN 
+
+- load balancer: distribute incoming traffice accross multiple servers to optimize performance 
+- key value stores: storage system that manage data as pairs of keys and values implemented via has tables 
+- blobl storage: a service for storge large amount of unstructured data 
+- database: organize collection and facilate easy access 
+- monitoring systems: tools to trance and analyze infrastructure including bandwith and cpu usage 
+- message ques: facilitates communication betweent producers and consuemrs ensuring reliable process
+- distributed unique id generators: system that generate unique identifiers 
+- distributed search: allows user to search accroess multiple date sources 
+- distributed logging 
+- distributed 
+
+
+
+#System architecture patterns 
+- client server 
+	- client that request services and servers provide them 
+- event driven
+	- uses events to trigger and communicate between decoupled echancing and responsive ness 
+
+- microkernel
+	- centers around core system with addition feature 
+
+- microservice 
+	- breaks application into small independent service that can be deployed and scaled
+
+#SYSTEM DESIGN 
+
+- vertical scaling 
+	- if you have a lot of users already 
+	you just add some resources so they can handle 
+
+
+
+- horizontal scalings
+	- adding replicas 
+	- which is we apply load balancing 
+	- we can use algorithm round robin
+
+
+- load balancing
+	- its a server that does reverse proxy
+	- it directs request to the proper 
+
+	- alogorithm like round robing balances
+	the traffic 
+
+	- we can also do the hashing stuff 
+	- load balancer can also
+
+
+	- if the server is all around the world 
+	we can also use load balancing to load the request to the nearest 
+	this is called content delivery network
+
+
+- content delivery network
+	- its a network of server located in difference places
+	- they dont really run application logic 
+	- they work by taking files hosted on you server 
+	- this is also one technique for caching
+
+
+- caching 
+ 	- creating copies of the data so in the future you can refetch it and make it 
+
+
+
+- grpc 
+	- the date is serialize into binary which is faster 
+- graph
+
+- rest 
+	- rest uses json for body which is human readable
+
+- websocket 
+
+
+- data stucture 
+	- b tree
+
+
+- no sql
+	-  dynamo db 
+	- 
+
+- if we dont have any foreign keys we can break up our database horizontaly we call it
+
+
+- search for sharding 
+
+- database replication 
+	- leader follower replication 
+		- every write can go to leader to follower 
+		- but every read is for both of them
+
+	- leader leader 
+
+
+- cap theorom 
+	- consistency 
+	- availability 
+	- partition 
+
+- message queues 
+
+- replication and sharding
+
+
+
+########## SYSTEM DESIGN 
+
+- if there are many reads but fewer writes what system design do you need ? 
+	- you should implement caching 
+
+	- problem with caching is to keep the cache database and database insync 
+	- ttl and keys can help maintain caching 
+
+
+
+- if there are many writes and fewer read?
+
+	- we can tackle this with ansyncronous writes with message 
+	- instead of processing it imediately we can put them in the message quee
+
+
+	- we used lsm tree based database like cassandra 
+		- this kind of database collect writes in memory and flush them to disk as sorted files 
+		- to maintain perfomance they perform compaction merging files to reduce looks ups required doing reads
+		this become writes very fast but reads become slower 
+
+
+
+- how to application with a single database which can stop on a 
+	- we can solve this thru redunducy and fail over  
+	- implementing replica 
+
+	cons 
+	- syncronous replication with no data loss but slower with higher latency
+	- async with better performance but can have loss data when failure
+
+
+ 
+	- there also this thing who use quorum based replication 
+	to balance inconsistency
+
+
+- for payment that requires high availablity this requires both load balancing and replication working together
+
+	- load balance distribute traffic to server cluster and reroute failures 
+	- for database primary replica is standard, the primary handles write while multiple replica handle reads
+	replica ensure if a primary fails the replica can take over
+
+- multiple primary replication is something
+
+
+
+- when you have an application on the other side of the world 
+you can use CDN to solve this problem 
+
+	- static content like videos and image can be solve by cdn caching content close to the 
+
+	- dynamic content solution like cache computing 
+
+
+
+block storage which is low latency and iops is ideal for databases for frequent  small files 
+object storage cost less and designed to handle large static files
+
+
+#DATABASE
+
+- without indexes the database scans every record to find what it 
+
+
+#sharding 
+	- splitting the database across multiple machine 
+		- range base 
+		- hash base
+
+
+	cons 
+	- its complex and challenging to reverse 
+
+
+
+
+
+
+
+- DDDB
+	- manage no sql database optimize for performance at scale 
+	- its a key value look up store 
+	- you can put it in a partition 
+
+	- its a manage database we dont need 
+		hardware do all security patches and do the maintenance 
+		this is total manage of aws 
+
+	- its optimize for performance at scale
+		- you can scale horizontaly and adding more nodes ins a cluster ( ST )
+		if the size of the data of the cluster grows performance still good
+
+	- high availability and durability 
+
+	- you access them via orms and apis authorized through 
+		- boto 3 ( ST )
+
+	- integrate well with other aws services this is the strength 
+		- you can set up streams 
+		- then pipe it on the lambda changes 
+		- good for reporting 
+		- you can integrate this to s3 
+
+	- cost effective usage base payment model 
+
+		- what is node in DDB ( ST )
+
+
+
+#CORE CONCEPT 
+	- tables are collection of items 
+	- items are collection of attributes 
+
+
+	- primary key 
+		- has partition key and sort key 
+
+
+
+#CREATING DYNAMO DB
+
+-  you cannot add a sort key after its created 
+
+
+
+
+
+################### 
+
+MONOLYTHIC VS MICROSERVICES
+
+
+
+
+
+
+
+
+################ DESIGN PATTERN
+
+
+creational pattern 
+	factory 
+	- its like you already initiate what you wanted 
+	- so when you want this object to be this way 
+
+	builder pattern 
+	- you create another class to make the builder 
+		along side with the class methods you want that returns reference to the builder 
+
+	- then you can instantiate it and call the class methods 
+
+
+	singleton
+	- this was use to have the one source of truth m 
+
+
+behavioral patterns 
+	observer 
+	- we have a subject/ publisher which is the source of event
+	- we also have observers/ subscriber to listen for the events
+
+
+
+
+
+
