@@ -1,0 +1,154 @@
+###############################################################################################  INTERVIEW QUESTION 1
+
+
+1. You are working on a high-performance backend service handling large amounts of data. How would you optimize a Python function that processes millions of records to reduce memory consumption and execution time?
+
+2. Your team needs to build a secure and scalable web application using Django/Flask. How would you structure the project, ensuring modularity and maintainability? Explain how you would handle authentication and request validation.
+
+3. You are designing a microservices-based application where one service needs to make multiple API calls asynchronously to fetch data from different sources. How would you implement this in Python? What tools/libraries would you use?
+
+4. You are tasked with designing a REST API for a payment system where users can create transactions, view their history, and request refunds. 
+How would you structure the endpoints and ensure proper use of HTTP verbs (GET, POST, PUT, DELETE)?
+
+
+5. A background job in your microservices application takes longer than expected to complete, causing performance issues. How would you implement an asynchronous task queue to offload heavy computations? What tools would you consider (e.g., Celery, asyncio)?
+
+6.Write a Python program to implement binary search on a sorted array using recursion
+Binary Search is a method of searching by which the sorted array is systematically split 
+in half until the given number is found if the number is not present 
+a suitable error message should be displayed. Recursion should be used to achieve this result.
+
+arr=[0,10,20,30,40,50,60,70,80]
+
+7.Asynchronous Programming
+You need to design a Python application that can handle a high volume of concurrent I/O-bound tasks efficiently. How would you implement asynchronous programming in Python to achieve this?
+
+
+8.What are the ways to customize the functionality of the Django admin interface?
+
+9. Your Django application needs to support multiple languages and regional formats. How would you implement internationalization and localization in Django? Discuss how you would manage translations, date formats, and currency formatting.
+
+
+
+10.Microservice Architecture Design
+You are tasked with designing a microservice architecture for a high-traffic e-commerce platform. The system needs to handle user authentication, product catalog, shopping cart management, order processing, and payment processing. Please describe how you would design the microservices, including the communication protocols, data storage, and API gateway.
+        
+
+11. Write a Python script to extract data from a REST API endpoint and store the results in an S3 bucket as a JSON file. Handle pagination if the API returns data in multiple pages.
+
+
+12. The organization is looking to standardize its API development processes across teams. Explain the practices you would establish to promote consistency and best practices in REST API development.
+
+    
+13. A client has reported security vulnerabilities in the current REST API, specifically regarding data exposure. What steps would you take to enhance the security of the API?
+
+
+14. Create a REST API that allows users to add, retrieve, and delete user data stored in memory. The API should handle errors for invalid operations gracefully.
+
+
+
+
+###############################################################################################  INTERVIEW QUESTION 2
+
+
+Design an efficient caching mechanism for the ReactJS frontend that reduces the number of requests made to the Python backend.
+Integrate a real-time data processing pipeline using AWS Lambda functions and Amazon Kinesis Data Streams to process large amounts of user-generated data.
+Implement authentication and authorization mechanisms using Amazon Cognito User Pools and IAM roles to ensure secure access to the application's resources.
+Design an automated CI/CD pipeline that uses AWS CodePipeline, AWS CodeBuild, and AWS CodeCommit to automate testing, building, and deployment of the application.
+
+
+*Constraints:*
+
+
+The ReactJS frontend must use a state management library other than Redux (e.g., MobX or React Query).
+The Python backend must be deployed behind an Amazon API Gateway that uses Route 53 for DNS resolution.
+The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which will handle the deployment of infrastructure resources.
+
+
+############################################################################################### ANSWER BELOW
+
+
+1.
+
+#Memory optimization
+- use generators and iterators instead of loading all data into memory at once 
+
+- implement lazy evaluation- only computer what you need when you need it 
+- memory mapping allows you to access file contents without loading everything on RAM
+
+Leverage NumPy/pandas vectorization - these libraries use optimized C implementations that can be 10-100x faster than pure Python loops for numerical operations.
+
+- for cpu bound use multiprocess
+- for i/o you async or multithread
+- better concurent code writing technique like divide them in chunks
+
+- improve algorithm
+- use cache systems like redis
+- early termination, when task is achieve break out loops
+
+2. 
+
+Service layer pattern - separate business logic from views:
+Dependency injection - use factories and dependency containers to make components testable and loosely coupled.
+Repository pattern for data access abstraction, making it easier to test and switch data sources.
+
+#Auth
+JWT with refresh tokens for stateless authentication:
+Role-based access control (RBAC) with decorators:
+
+#request
+Input validation like marshmallow 
+Rate limiting to prevent abuse:
+
+#Security Measures
+CORS configuration:
+SQL injection prevention using parameterized queries and ORM query builders.
+XSS protection by sanitizing user input and using Content Security Policy headers:
+
+#Scalability
+Asynchronous task processing using Celery for heavy operations.
+
+
+3.
+
+- i would use asnycronous programming
+
+Primary Libraries:
+
+asyncio: Built-in Python async framework
+aiohttp: Async HTTP client/server library
+httpx: Modern alternative to requests with async support
+
+Supporting Libraries:
+
+tenacity: Retry logic with exponential backoff
+prometheus-client: Metrics and monitoring
+fastapi: Async web framework for APIs
+
+Performance: Parallel execution reduces total response time
+Scalability: Non-blocking I/O allows handling more concurrent requests
+Resilience: Circuit breakers and retries handle service failures gracefully
+Resource Efficiency: Async I/O uses fewer threads than synchronous approaches
+
+
+5.
+Move heavy computations to separate worker processes that run independently from the main application.
+i would use celery for this task with redis
+
+
+7.
+
+I'd use Python's built-in asyncio library, leveraging the async and await keywords to handle many concurrent I/O-bound tasks. This approach allows the application to perform other work while waiting for slow operations like network requests or database queries to complete, rather than blocking and wasting CPU cycles.
+
+
+
+12.
+- Consistent Naming Conventions 命名
+- Proper Use of HTTP Verbs ✅
+-  Standardized Data Format and Structure 📜
+- Clear and Consistent Error Handling 
+- API Versioning
+- Enable Filtering, Sorting, and Pagination 
+- Documentation as a Deliverable
+- testing
+
