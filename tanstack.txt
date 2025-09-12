@@ -1,0 +1,35 @@
+Query instances via useQuery or useInfinite query by default consider cached data as stale
+- you can configure your stale time to make sure data is read from cache
+- setting staletime is the recommender way to avoid excessive refetches
+
+
+#Query Basics
+- a query is a declarative dependency on an asnyc source of data that is tied to a unique key.
+- can be used with any promise base method
+- if your method modifies data on server, we recommend using Mutations instead.
+
+- to subscribe to a query in your component or custom hooks, call the useQuery hook with at least:
+	- unique key for the query
+	- a function that returns promise that
+		- resolves data,
+		- throw error
+
+#Query Keys
+- 
+
+
+##### About react query 
+
+- React query is an async state manager. 
+
+
+############################################# Mutations
+
+- unlike queries this are to perform side effects
+
+- mutate function is an async function. which means you cannot use it directly in an
+event callback in react 16 and earlier. "read about event pooling"
+
+si mau sahod 190
+si russel 180
+

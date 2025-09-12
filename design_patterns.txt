@@ -1,0 +1,287 @@
+ 
+
+
+
+
+################ DESIGN PATTERN
+
+
+###creational pattern 
+	- instead of creating object directly, these patterns gives you more flexibility 
+	in how objects come into existence
+
+
+	#factory 
+	- its like you already initiate what you wanted 
+	- so when you want this object to be this way  
+	- the object creation logic is put in the constructor 
+
+	- its like instead of you creating 3 function just define a role of this user 
+	you put this in a constructor and based on the instance 
+
+	#builder pattern 
+	- you create another class to make the builder 
+		along side with the class methods you want that returns reference to the builder 
+
+	- then you can instantiate it and call the class methods 
+	- if you want a way to have a much cleaner way on creating the instance
+
+	- usefull if you have more paramaters in your constructor
+
+
+	#singleton
+	- you want to have this kind of design if you want a single instance that is accesable globally 
+		- the advantage is you are guaranteed to have single instance 
+		- prevents multiple copies of resources/state 
+		- its easy to use anywhere in the application | global access point
+
+
+		- cons
+		- testing difficulties hard to mock 
+		- threadding issues, race condition during instance creation
+
+
+	#prototype
+
+
+ 
+###behavioral patterns 
+	- this handles the communication between object - how they interact and distribute responsiblity
+
+	#observer 
+	- we have a subject/ publisher which is the source of event
+	- we also have observers/ subscriber to listen for the events
+
+
+	#strategy pattern
+	-  so instead of you writing a lot of if else for your function
+	- you can put it in an interface then you define the class for each specific function that you want
+
+	- put the logic into specific class. now this class you can make it interchangable
+
+	tips:
+	if you got different ways to have one goal then this is the go to
+
+	cons:
+	- you will have alot of class
+
+	read about
+	- interface
+
+	#mediator
+
+	#state
+
+
+###strucutral patterns 
+	- deals with how object relate to each other 
+	- think of them as blue prints for building larger structure from individual pieces
+	- this is like kinda of a blue prints for building for larger structure
+
+
+	#facade 
+		-  its a fancy way of encapsulation
+		- think of it as all the complex logic compiled in 1 class
+		instead of writing tons of logic the rewrite all the checks
+		
+	#adapter
+		- example you got a third party api that has function that you need
+		instead of calling it every time then do your calculation 
+
+		- you can wrap it in a class ( adapter )
+
+
+
+	#proxy
+
+
+
+
+
+
+
+- i think the dependency injection in fastAPI is kinda like the singleton?
+
+
+
+Use Case	Tool
+Small–medium text or binary data in RAM	io.StringIO / BytesIO
+Lazily access or slice very large files on disk	mmap
+Share arrays or buffers across processes	multiprocessing.shared_memory
+Low-level C-style memory fiddling (rare)	ctypes or C extension
+
+
+
+######### STATEGY PATTERN
+
+
+from typing import Callable, List, Tuple
+
+# 1) Define our “context” to accept any function matching this signature
+PaymentFunc = Callable[[float], None]
+
+class ShoppingCart:
+    def __init__(self):
+        self.items: List[Tuple[str, float]] = []
+
+    def add_item(self, name: str, price: float) -> None:
+        self.items.append((name, price))
+
+    def total(self) -> float:
+        return sum(price for _, price in self.items)
+
+    def pay(self, payment_func: PaymentFunc) -> None:
+        amount = self.total()
+        payment_func(amount)
+
+# 2) Define functions that match the strategy signature
+def credit_card_payment(amount: float, card_number: str = "0000-0000-0000-0000") -> None:
+    print(f"Charging ${amount:.2f} to credit card {card_number}")
+
+def paypal_payment(amount: float, email: str = "user@example.com") -> None:
+    print(f"Paying ${amount:.2f} via PayPal account {email}")
+
+# 3) Usage
+cart = ShoppingCart()
+cart.add_item("Notebook", 9.99)
+cart.add_item("Pen",      1.49)
+
+# Wrap your function and any extra args in a lambda or functools.partial
+from functools import partial
+
+cart.pay(partial(credit_card_payment, card_number="1234-5678-9012-3456"))
+cart.pay(partial(paypal_payment, email="user@example.com"))
+
+
+
+
+######## FACTORY PATTERN
+
+
+
+from abc import ABC, abstractmethod
+
+# —1) Product interface—
+class Notification(ABC):
+    @abstractmethod
+    def send(self, message: str) -> None:
+        pass
+
+# —2) Concrete Products—
+class EmailNotification(Notification):
+    def __init__(self, sender: str):
+        self.sender = sender
+
+    def send(self, message: str) -> None:
+        print(f"[Email from {self.sender}]: {message}")
+
+class SMSNotification(Notification):
+    def __init__(self, provider: str):
+        self.provider = provider
+
+    def send(self, message: str) -> None:
+        print(f"[SMS via {self.provider}]: {message}")
+
+# —3) Creator base with the “factory method”—
+class NotificationFactory(ABC):
+    @abstractmethod
+    def factory_method(self) -> Notification:
+        """Return a Notification instance."""
+        pass
+
+    def notify(self, message: str) -> None:
+        """Common business logic uses the product."""
+        notification = self.factory_method()
+        notification.send(message)
+
+# —4) Concrete Creators override factory_method—
+class EmailFactory(NotificationFactory):
+    def __init__(self, sender: str):
+        self.sender = sender
+
+    def factory_method(self) -> Notification:
+        return EmailNotification(self.sender)
+
+class SMSFactory(NotificationFactory):
+    def __init__(self, provider: str):
+        self.provider = provider
+
+    def factory_method(self) -> Notification:
+        return SMSNotification(self.provider)
+
+# —Usage—
+if __name__ == "__main__":
+    email_factory = EmailFactory("noreply@andyou.ph")
+    email_factory.notify("Your order has shipped!")
+
+    sms_factory = SMSFactory("Twilio")
+    sms_factory.notify("Your verification code is 123456")
+
+
+
+ ##### BUILDER 
+
+ # 1) The Product
+class Car:
+    def __init__(self, engine, wheels, color):
+        self.engine = engine
+        self.wheels = wheels
+        self.color = color
+
+    def __str__(self):
+        return (f"Car with {self.engine} engine, "
+                f"{self.wheels} wheels, painted {self.color}")
+
+
+# 2) The Builder
+class CarBuilder:
+    def __init__(self):
+        self._engine = None
+        self._wheels = None
+        self._color = None
+
+    def set_engine(self, engine: str):
+        """e.g. 'V6', 'Electric'"""
+        self._engine = engine
+        return self
+
+    def set_wheels(self, count: int):
+        self._wheels = count
+        return self
+
+    def set_color(self, color: str):
+        self._color = color
+        return self
+
+    def build(self) -> Car:
+        # You could add validation here
+        if None in (self._engine, self._wheels, self._color):
+            raise ValueError("Engine, wheels, and color must all be set")
+        return Car(self._engine, self._wheels, self._color)
+
+
+# —Usage example—
+if __name__ == "__main__":
+    car = (CarBuilder()
+           .set_engine("Electric")
+           .set_wheels(4)
+           .set_color("Midnight Blue")
+           .build())
+    print(car)  # Car with Electric engine, 4 wheels, painted Midnight Blue
+
+
+Exactly—your concrete subclass needs to inherit from the abstract base class (the one that subclasses ABC) so that Python knows “this is meant to fulfill that contract.” Then you implement all the @abstractmethods, and only then can you instantiate your subclass.
+
+
+
+
+#LEARN AGAIN
+
+STRATEGY PATTERN
+    - you have a specific body for this cake 
+    - then split the other cakes to there own classes
+    - now you just need to call two methods to create the cake that you want
+DECORATOR
+
+
+

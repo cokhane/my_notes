@@ -1,0 +1,52 @@
+Design Pattern Holy Book P 17
+
+
+• Abstract Factory (page 99)
+• Adapter (157)
+• C omposite (183)
+• Decorator (196)
+• Factory Method (121)
+• Observer (326)
+• Strategy (349)
+• Template Method (360)
+
+
+What is a Design Pattern?
+
+- each pattern describes a problem which occurs over and 
+over again in our environment and then desribe the core of the solution
+to that problem, in such a way you can use this solution a million times 
+over without doing it the same way twice.
+
+
+#Pattern has four essential elements:
+
+1. the pattern name
+	- to desribe a design problem, its solution, and consqeuence
+
+2. problem
+	- describe when to apply the pattern, some times the problem will include a list 
+	of conditions that must be met before it make sense to apply the pattern
+
+3. solution
+	- desribes the elements that make up the design, their relation, responsibilities 
+
+4. consequences
+	- are the results and trade-offs of applying the pattern.
+
+ - design patterns are not linked list and hash tables that can be used later, nor are they complex
+ - design patterns in this book are description of communicating objects and classes
+
+
+#Strategy
+ - the view-controller relation ship is an xample of Strategy pattern
+ - a strategy is an object that represent algorithm
+
+
+#MVC
+
+- model is the application object
+- the view is the screen representation
+- controller defines the way the user interfaces to react to user input
+- view can be nested
+- the view controller is an example of strategy

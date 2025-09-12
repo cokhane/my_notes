@@ -29,7 +29,6 @@ You need to design a Python application that can handle a high volume of concurr
 9. Your Django application needs to support multiple languages and regional formats. How would you implement internationalization and localization in Django? Discuss how you would manage translations, date formats, and currency formatting.
 
 
-
 10.Microservice Architecture Design
 You are tasked with designing a microservice architecture for a high-traffic e-commerce platform. The system needs to handle user authentication, product catalog, shopping cart management, order processing, and payment processing. Please describe how you would design the microservices, including the communication protocols, data storage, and API gateway.
         
@@ -46,6 +45,15 @@ You are tasked with designing a microservice architecture for a high-traffic e-c
 14. Create a REST API that allows users to add, retrieve, and delete user data stored in memory. The API should handle errors for invalid operations gracefully.
 
 
+Introduction and background of participants.
+Overview of the company "Overproof" and its services.
+Discussion on software development experiences and preferences.
+Technical discussion on APIs and ETL processes.
+Daily routine and task management using tools like Notion and Jira.
+Communication preferences and the importance of meetings in the workplace.
+Handling difficult conversations with management regarding project timelines and code issues.
+Exploration and use of AI tools in current and past projects.
+Server issues and the need for urgent attention to a problem.
 
 
 ###############################################################################################  INTERVIEW QUESTION 2
@@ -72,7 +80,6 @@ The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which 
 
 #Memory optimization
 - use generators and iterators instead of loading all data into memory at once 
-
 - implement lazy evaluation- only computer what you need when you need it 
 - memory mapping allows you to access file contents without loading everything on RAM
 
