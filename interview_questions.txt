@@ -147,3 +147,633 @@ I'd use Python's built-in asyncio library, leveraging the async and await keywor
 - Documentation as a Deliverable
 - testing
 
+
+
+############################################################################################### ANSWER PART 2 
+
+1) Optimizing a Python function that processes millions of records
+
+Mindset: measure → reduce allocations → stream data → use native/compiled ops → parallelize where it’s safe.
+
+Checklist (in priority order):
+
+Profile first: cProfile, snakeviz, line_profiler, memory_profiler to find your hottest 1–2 functions and largest allocators.
+
+Avoid loading everything in memory:
+
+Stream from disk/network with iterators/generators.
+
+Chunk large files (e.g., read CSV in 1–10M row chunks).
+
+Use yield pipelines and itertools to keep memory flat.
+
+Prefer vectorized/compiled code:
+
+Use NumPy/polars/pyarrow for numeric/columnar ops.
+
+For custom tight loops, consider Cython / numba @njit.
+
+Minimize Python overhead:
+
+Use local variable lookups, avoid attribute churn inside loops.
+
+Pre-bind functions (local_append = out.append), avoid lambda in hot loops.
+
+Reuse buffers (bytearray, memoryview) instead of recreating.
+
+Data structures: choose arrays over lists for numeric data; use dict/set for O(1) membership; consider dataclasses with slots=True or __slots__ to cut memory.
+
+I/O & serialization:
+
+Prefer msgpack or orjson over JSON for speed.
+
+Use gzip/zstd streams to reduce I/O volume if CPU is spare.
+
+Parallelization:
+
+I/O-bound → asyncio or thread pools.
+
+CPU-bound → multiprocessing/Ray/joblib or offload to vectorized libs.
+
+Keep chunks large enough (≥50k–1M rows) to amortize overhead.
+
+GC and allocations:
+
+Limit short-lived object churn; batch work.
+
+For very large loops, occasionally gc.collect() (measure impact).
+
+OS-level: Use mmap for large read-only files; pin process to large pages if applicable.
+
+Quick example (streaming transform):
+
+from csv import reader
+from itertools import islice
+
+def rows(path, chunk=1_000_000):
+    with open(path, 'r', newline='') as f:
+        r = reader(f)
+        while True:
+            block = list(islice(r, chunk))
+            if not block: break
+            yield block
+
+def process_file(path):
+    # process 1M rows at a time to keep memory flat
+    for block in rows(path):
+        # vectorize inside each block if possible
+        # e.g., convert to numpy and operate
+        pass
+
+2) Structuring a secure, scalable Django/Flask app
+Project structure (modular, 12-factor)
+app/
+  __init__.py
+  api/              # blueprints/apps per domain (users, payments, etc.)
+    users/
+      __init__.py
+      routes.py
+      schemas.py    # Pydantic/Marshmallow/DRF serializers
+      services.py   # business logic
+      repo.py       # data access
+      models.py
+  core/             # cross-cutting: config, logging, security, db
+    config.py
+    db.py
+    security.py
+    logging.py
+  tasks/            # Celery/async jobs
+tests/
+migrations/
+
+
+Django: use apps per domain, settings/ package (base/dev/prod), urls.py routes per app, DRF for APIs.
+
+Flask: use Blueprints per domain, an app factory, and dependency injection for services.
+
+Authentication
+
+Django: built-in auth + Django REST Framework (DRF) with JWT (e.g., djangorestframework-simplejwt). Use SessionAuth only for server-rendered admin.
+
+Flask: Flask-JWT-Extended for JWT or flask-login (server-rendered). Rotate secrets, short token TTL, refresh tokens, blacklist support.
+
+Authorization
+
+Role/permission checks at service boundaries.
+
+In Django, use django-guardian for object-level perms if needed; in Flask, simple policy decorators or Oso/Casbin.
+
+Request validation
+
+Django/DRF: serializers handle validation/typing.
+
+Flask: Pydantic or Marshmallow with webargs; validate both query and body.
+
+Enforce idempotency keys on write endpoints that can be retried (payments).
+
+Security & ops
+
+Settings via environment; separate secrets (vault).
+
+HTTPS everywhere, HSTS, CSRF (if sessions), CORS allowlist.
+
+Central logging (JSON), request IDs, structured metrics, health checks.
+
+3) Async fan-out to multiple APIs (Python)
+
+Tools: asyncio, aiohttp (client), async-timeout, optional retry (tenacity), uvloop for faster event loop (Linux).
+
+import asyncio, aiohttp
+from contextlib import asynccontextmanager
+from aiohttp import ClientTimeout
+
+@asynccontextmanager
+async def session():
+    timeout = ClientTimeout(total=10)  # global timeout
+    conn = aiohttp.TCPConnector(limit=100)  # connection pool
+    async with aiohttp.ClientSession(timeout=timeout, connector=conn) as s:
+        yield s
+
+async def fetch(s, url, **kwargs):
+    for attempt in range(3):
+        try:
+            async with s.get(url, **kwargs) as r:
+                r.raise_for_status()
+                return await r.json()
+        except Exception:
+            if attempt == 2: raise
+            await asyncio.sleep(0.2 * (2 ** attempt))
+
+async def aggregate(urls):
+    async with session() as s:
+        sem = asyncio.Semaphore(20)  # backpressure
+        async def wrapped(u):
+            async with sem:
+                return await fetch(s, u)
+        return await asyncio.gather(*(wrapped(u) for u in urls), return_exceptions=False)
+
+# asyncio.run(aggregate([...]))
+
+
+Notes:
+
+Use semaphores to cap concurrency.
+
+Set timeouts and retries per call.
+
+Parse results defensively; prefer pydantic models for schemas.
+
+4) Payment REST API design (verbs, endpoints)
+
+Resources: transactions, refunds, customers (optional).
+
+POST /transactions – create a charge.
+
+Body: amount, currency, source, idempotency-key (header).
+
+Returns 201 + transaction.
+
+GET /transactions?customer_id=&status=&from=&to=&limit=&cursor= – list (paginated).
+
+GET /transactions/{txn_id} – fetch one.
+
+POST /transactions/{txn_id}/capture – capture an auth (action endpoint).
+
+POST /refunds – create refund for a txn (or POST /transactions/{id}/refunds).
+
+GET /refunds/{refund_id} – fetch refund.
+
+GET /refunds?transaction_id= – list.
+
+Idempotency: all POSTs accept Idempotency-Key.
+
+Status codes: 201 (created), 200 (OK), 202 (async accepted), 400/401/403/404, 409 (conflict), 422 (validation), 429 (rate limit).
+
+Webhooks: payment.succeeded, refund.created, signed & replay-protected.
+
+Security: JWT/OAuth2; mTLS for provider callbacks; never expose full PAN (PCI DSS).
+
+5) Asynchronous task queues (slow background jobs)
+
+Choose based on workload:
+
+Celery + Redis/RabbitMQ: mature, retries, ETA/cron, chords. Great for CPU/I/O mix if tasks aren’t trivial.
+
+RQ/Dramatiq/Huey: simpler queues on Redis.
+
+Asyncio workers: if you already run an async app and tasks are I/O-bound (e.g., aio-pika + RabbitMQ, or arq).
+
+AWS SQS + Lambda: serverless queue processing.
+
+Celery example:
+
+# tasks/celery_app.py
+from celery import Celery
+celery = Celery(__name__, broker="redis://:pwd@redis:6379/0", backend="redis://redis:6379/1")
+celery.conf.task_acks_late = True
+celery.conf.worker_prefetch_multiplier = 1  # fair dispatch
+
+@celery.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=5)
+def generate_report(self, user_id):
+    # heavy work...
+    return {"url": f"/reports/{user_id}.pdf"}
+
+
+Producer (web request handler):
+
+task = generate_report.delay(user_id)
+return {"task_id": task.id}, 202
+
+
+Monitoring: Flower/Prometheus metrics, dead letter queues, idempotent tasks.
+
+6) Recursive Binary Search (on a sorted array)
+def binary_search(arr, target, lo=0, hi=None):
+    if hi is None:
+        hi = len(arr) - 1
+    if lo > hi:
+        return -1  # not found
+    mid = (lo + hi) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] > target:
+        return binary_search(arr, target, lo, mid - 1)
+    else:
+        return binary_search(arr, target, mid + 1, hi)
+
+# Demo
+arr = [0,10,20,30,40,50,60,70,80]
+x = 30
+idx = binary_search(arr, x)
+if idx == -1:
+    print(f"{x} not found in array.")
+else:
+    print(f"{x} found at index {idx}.")
+
+7) Designing for high-volume concurrent I/O (async)
+
+Principles: event loop, cooperative coroutines, connection pooling, timeouts, backpressure, cancellation, observability.
+
+Stack: asyncio + aiohttp or httpx[async], uvloop (Linux), aio-pg/asyncpg for Postgres, aioredis, aiokafka.
+
+Server example (aiohttp):
+
+import asyncio
+from aiohttp import web, ClientSession, ClientTimeout
+
+async def handle(request):
+    query = request.query.get("q", "")
+    async with ClientSession(timeout=ClientTimeout(total=5)) as s:
+        async with s.get(f"https://example.com/search?q={query}") as r:
+            data = await r.json()
+    return web.json_response({"data": data})
+
+app = web.Application()
+app.add_routes([web.get("/search", handle)])
+
+if __name__ == "__main__":
+    web.run_app(app, host="0.0.0.0", port=8080)
+
+
+Tuning:
+
+uvloop (import uvloop; uvloop.install()),
+
+Semaphore around client calls,
+
+Circuit breakers (pybreaker),
+
+Bulkheads per dependency,
+
+Timeouts & retries with jitter,
+
+Structured logging & tracing (OpenTelemetry).
+
+8) Customizing Django Admin
+
+ModelAdmin options: list_display, list_filter, search_fields, ordering, readonly_fields, date_hierarchy, list_select_related.
+
+Forms & validation: custom ModelForm, override clean().
+
+Inlines: TabularInline / StackedInline for related models.
+
+Actions: bulk operations via actions = [export_csv].
+
+Queryset control: override get_queryset, per-user filtering with has_module_permission, get_readonly_fields.
+
+Layout: fieldsets, filter_horizontal, raw_id_fields.
+
+Branding: subclass AdminSite, override templates (admin/base_site.html).
+
+Performance: list_select_related, autocomplete_fields.
+
+9) i18n & l10n in Django
+
+Settings:
+
+LANGUAGE_CODE = 'en'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+LANGUAGES = [('en','English'),('fil','Filipino'),('es','Spanish')]
+LOCALE_PATHS = [BASE_DIR / 'locale']
+MIDDLEWARE = ['django.middleware.locale.LocaleMiddleware', ...]
+
+
+Mark strings: from django.utils.translation import gettext_lazy as _; _("Checkout")
+
+Templates: {% load i18n %}{% trans "Hello" %}
+
+Messages workflow:
+
+django-admin makemessages -l fil -l es
+django-admin compilemessages
+
+
+Per-request language: /i18n/setlang/ view or Accept-Language header.
+
+Dates & numbers: {{ value|localize }}, django.utils.formats. For currency, prefer Babel:
+
+from babel.numbers import format_currency
+format_currency(1234.5, 'PHP', locale='fil_PH')  # '₱1,234.50'
+
+
+URLs: use i18n_patterns for localized paths if needed.
+
+10) E-commerce microservices architecture
+
+Services (bounded contexts):
+
+Auth (users, tokens)
+
+Catalog (products, pricing, inventory read model)
+
+Cart (ephemeral, per user)
+
+Orders (checkout, order states)
+
+Payments (charge providers, webhooks)
+
+Inventory (stock reservations, adjustments)
+
+Fulfillment (shipping, tracking)
+
+Communication:
+
+Synchronous: REST/gRPC for read/command request/response.
+
+Asynchronous: Kafka (or SNS/SQS) for domain events (e.g., order.created, payment.succeeded), Saga pattern for multi-step workflows.
+
+Data: each service owns its DB (polyglot: Postgres for orders, DynamoDB for cart, Elasticsearch/OpenSearch for search).
+
+API Gateway: single entry (rate-limit, auth, request validation, aggregation). Canary releases.
+
+Observability: central logging, tracing (OpenTelemetry), metrics (Prometheus), dashboards, SLOs, circuit breakers.
+
+Resilience: idempotency, retries with backoff, DLQs, outbox pattern for reliable event publishing.
+
+11) Script: fetch paginated REST API and upload to S3 as JSON
+import os, json, time, requests, boto3
+
+API_URL = "https://api.example.com/items"
+S3_BUCKET = "my-bucket"
+S3_KEY = "exports/items.json"
+HEADERS = {"Authorization": f"Bearer {os.environ['API_TOKEN']}"}
+
+def fetch_all():
+    items, page = [], 1
+    while True:
+        r = requests.get(API_URL, params={"page": page, "limit": 200}, headers=HEADERS, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+        items.extend(data["results"])
+        if not data.get("next"): break
+        page += 1
+        time.sleep(0.2)  # be nice
+    return items
+
+def upload_json_s3(obj, bucket, key):
+    s3 = boto3.client("s3")
+    body = json.dumps(obj, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    s3.put_object(Bucket=bucket, Key=key, Body=body, ContentType="application/json")
+
+if __name__ == "__main__":
+    all_items = fetch_all()
+    upload_json_s3(all_items, S3_BUCKET, S3_KEY)
+    print(f"Uploaded {len(all_items)} records to s3://{S3_BUCKET}/{S3_KEY}")
+
+
+Adjust pagination to your API style: ?cursor=..., Link headers, etc.
+
+Use instance profile/role or env vars for AWS creds; consider multipart upload for very large payloads.
+
+12) Standardizing REST API development across teams
+
+Design-first with OpenAPI 3; keep specs in repo, reviewed via PR.
+
+API style guide: resource naming, verbs, pagination, filtering, sparse fields, idempotency, error format (RFC 7807), date/time (ISO-8601 UTC), headers, versioning (/v1 or header).
+
+Security standards: OAuth2/JWT, scopes, rate limits, mTLS where needed, secrets management.
+
+Tooling:
+
+Lint OpenAPI (speccy/oaslint), generate server/client stubs.
+
+Contract tests (Pact), schema validation middleware.
+
+Mock servers for dev (Prism).
+
+Observability: request IDs, structured logs, tracing, standard metrics.
+
+Deprecation policy: sunset headers, timelines, changelogs.
+
+Docs portal: Redoc/Swagger UI; examples, curl, SDKs.
+
+13) Hardening an API after a data-exposure report
+
+Triage & scope: what fields leaked, which endpoints, time window, actors.
+
+Immediate controls: feature flag the endpoint, tighten allowlists, raise authz checks, rotate keys/secrets.
+
+Fixes:
+
+Enforce authorization at object level; implement row-level filtering.
+
+Output filtering (never rely on hiding in front-end): serializers return only permitted fields; introduce projections/fields param.
+
+Input validation & schema: strict types; reject unknown fields.
+
+Rate limits/quota; WAF rules for scraping patterns.
+
+TLS everywhere; set security headers; correct CORS.
+
+Audit logging: who accessed what PII; add anomaly detection alerts.
+
+Sensitive data handling: encryption at rest, tokenization where needed, data retention limits.
+
+Tests: add security unit/integration tests; fuzzers; DAST/SAST in CI.
+
+Comms: responsible disclosure process, customer notice if required, post-mortem + preventive backlog.
+
+14) Minimal in-memory users REST API (Flask)
+from flask import Flask, request, jsonify, abort
+
+app = Flask(__name__)
+USERS = {}  # in-memory store
+
+@app.errorhandler(400)
+def bad_request(e): return jsonify(error="bad_request", detail=str(e)), 400
+@app.errorhandler(404)
+def not_found(e): return jsonify(error="not_found"), 404
+
+@app.post("/users")
+def add_user():
+    data = request.get_json(force=True, silent=False)
+    if not data or "id" not in data or "name" not in data:
+        abort(400, "id and name required")
+    uid = str(data["id"])
+    if uid in USERS:
+        abort(400, "user already exists")
+    USERS[uid] = {"id": uid, "name": data["name"], "email": data.get("email")}
+    return jsonify(USERS[uid]), 201
+
+@app.get("/users/<uid>")
+def get_user(uid):
+    u = USERS.get(uid)
+    if not u: abort(404)
+    return jsonify(u)
+
+@app.get("/users")
+def list_users():
+    return jsonify(list(USERS.values()))
+
+@app.delete("/users/<uid>")
+def delete_user(uid):
+    if uid not in USERS: abort(404)
+    del USERS[uid]
+    return "", 204
+
+if __name__ == "__main__":
+    app.run()
+
+15) Quick technical discussion: APIs & ETL
+
+APIs: contracts for synchronous interaction; prefer idempotent operations, timeouts, retries, and pagination.
+
+ETL/ELT: bulk/batch pipelines; CDC from OLTP to analytics; schema evolution via schema registry (Avro/Protobuf).
+
+Bridging both: event-driven outbox → Kafka → stream processors (Flink/Spark) → lake/warehouse (Iceberg/Delta) with idempotent sinks, data quality checks (Great Expectations), and backfills.
+
+Consistency: choose at-least-once with idempotency or exactly-once semantics in stream processors where needed.
+
+16) Hard conversations with management (timelines, code issues)
+
+Lead with data: show burn-down, blockers, defect rates, perf numbers.
+
+SBI/NVC: Situation–Behavior–Impact framing; separate code from coder.
+
+Offer options: (a) reduce scope, (b) extend time, (c) add staff (trade-offs explicit).
+
+Risk register: what happens if we don’t act.
+
+Next steps: propose a plan (feature flags, incremental rollout, stabilization sprint).
+
+Follow-ups: written summary, owners, dates.
+
+17) Urgent server issues
+
+Declare incident (SEV, commander, comms channel).
+
+Triage: health checks, error rates, saturation; rollback recent changes.
+
+Stabilize: scale out, toggle features, rate limits, circuit breakers.
+
+Root cause after restore: logs + traces + diffs.
+
+Post-mortem: blameless; action items, owners, deadlines.
+
+Prevent: runbooks, SLOs, canaries, chaos drills.
+
+Monolith → Microservices migration (safe path):
+
+Strangler-Fig pattern: route specific endpoints to new services via gateway; keep monolith as system of record initially.
+
+Domain carve-out: pick low-risk bounded contexts (e.g., auth, catalog read).
+
+Data: replicate via CDC to new service DBs; use anti-corruption layer; outbox for events.
+
+Observability first; CI/CD per service; finish by retiring monolith modules.
+
+18) End-to-end AWS design (React + Python + real-time + CI/CD)
+
+Frontend caching (React without Redux):
+
+Use React Query (or MobX if preferred).
+
+Stale-While-Revalidate: staleTime for hot lists; background refetch.
+
+Query keys: normalized keys per resource.
+
+Cache persistence: session/localStorage for short-term offline.
+
+Request de-dup: React Query does this automatically for identical keys.
+
+Serve SPA from S3 + CloudFront with long-TTL immutable assets, short-TTL HTML.
+
+Add edge caching for specific API GETs via CloudFront + API Gateway with cache key on headers/query (careful with auth).
+
+Backend:
+
+Python service (FastAPI/Flask) on ECS Fargate or Lambda behind API Gateway.
+
+Route 53 → CloudFront (optional) → API Gateway (custom domain) → Lambda/ECS.
+
+Auth: Cognito User Pools (OIDC/JWT). API Gateway authorizer validates tokens; service enforces scopes/claims.
+
+Authorization: fine-grained via claims (e.g., cognito:groups), resource policies; S3/IAM for server-to-server.
+
+Real-time processing:
+
+Kinesis Data Streams ingest events.
+
+Lambda consumers (or Kinesis Data Analytics if you need SQL windows).
+
+Store processed data in DynamoDB (low-latency) and archive to S3 (lake).
+
+Use Firehose to deliver batches to S3 with compression/partitioning.
+
+Idempotency with event sequenceNumber and DynamoDB conditional writes.
+
+CI/CD with infra as code:
+
+CodeCommit (or GitHub) → CodeBuild (tests, lint, unit/e2e) → CodePipeline.
+
+CloudFormation (or CDK) stacks for VPC, ECS/Lambda, API Gateway, Cognito, Kinesis, S3, CloudFront, Route53.
+
+Blue/Green or Canary deployments (CodeDeploy for Lambda/ECS).
+
+Env separation: dev/stage/prod accounts; parameterize via SSM Parameter Store/Secrets Manager.
+
+Quality gates: security scans (Bandit, pip-audit), SAST, OpenAPI validation, contract tests.
+
+Observability: CloudWatch logs/metrics, X-Ray tracing, alarms (SNS/PagerDuty).
+
+Sample React Query snippet (frontend caching):
+
+// useProducts.ts
+import { useQuery } from '@tanstack/react-query'
+export function useProducts() {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: () => fetch('/api/v1/products').then(r => r.json()),
+    staleTime: 60_000, // 1 min SWR
+    refetchOnWindowFocus: false
+  })
+}
+
+
+API Gateway + Cognito (high level):
+
+Configure a Cognito Authorizer on API methods; require Authorization: Bearer <JWT>.
+
+In Lambda/FastAPI, verify scopes/claims for resource access.
