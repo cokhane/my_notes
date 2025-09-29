@@ -1,0 +1,17 @@
+############################################# Abstract class
+
+- its a class that cannot be instantiated on its own and designed to be a blue print for other classes
+- allows us to define methods that must be implemented by subsclasses
+
+### When to use
+- define a common interface 
+- Enfore implementation of certain methods in child classes
+- Provide shared functionality 
+
+
+############################################# Encapsulation
+
+- is a fundamental in OOP protects your class from accidental changes and deletion, 
+- promotes code reusability
+
+- _protected, __private

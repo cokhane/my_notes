@@ -1,0 +1,118 @@
+############################################# Threads
+
+############################################# Courotine 
+
+- a variant of FN that enables concurrency via cooperative multitasking 
+
+
+############################################# Asynchronous
+
+- think of it as a cooperative multitasking. many task take turns on a single thread, yeilding control
+when ever they waiting ( usually I/O )
+- no extra thread for those turn just event loop
+
+
+### Asyncio
+- on thread, many courotines. courotines yield when they would block. so other courotine can run. 
+Ideal for high concurreny I/O 
+
+- it is a way to interleave thouse of I/O-bound operation efficiently on one thread, by yielding at await points 
+
+############################################# import concurrent.futures
+
+- high level interface for async executing callables
+
+### ProcessPoolExecutor
+- this methods chops iterables into a number of chunks which submits the pool as separate task
+- the size of chunk can be specified by a +integer 
+
+
+###ThreadPoolExecutor 
+- subclass that uses pool threads to execute calls asynchronously
+
+#Deadlocks 
+- when a future waits on the result of another feature\
+
+
+############################################# Concurrency
+
+- the execution of multiple task
+
+- if you can fully utilize the idle moments (i/0, ) so that other threads can work 
+this is the core principle of concurrency, the more we spend idle for the other task
+the more time we give to others to finish the task 
+
+
+- there are several ways to do it
+
+####multiprocess
+
+#Cons 
+- duplicated memory use for each run time 
+- any communication between the process has to be serialize and deserialize data 
+adding extra works for this side 
+
+#Pros 
+- parrellism
+
+
+####threads 
+
+ - as we add works, we only need to add callstack for each thread, reducing duplication of heap and bycode 
+
+ #Cons 
+ - GIL, while one worker works other will be idle unless the gil is released
+ - runtime is responsible for scheduling thread 
+    - every time a new thread is selected there is this thing called context switching 
+        - saving the execution task of the previous trade and resuming the new one which is called "Preemptive multi tasking"
+        - so since the run time doesnt have any idea what the threads are doing it switch threads of the wrong time resulting in sub optimal behavior
+
+#### Cooperative Multitasking
+
+- okay so what we want is the task can run throught there critical faces and only switch from there next task if needed be! unlike the preemptive someone decides to  switch it 
+and can cause interruption 
+this is called "Cooperative Multitasking"
+
+- this means that each task needs to either complete or yield control before another task can execute, you only yield when you wait for something
+
+
+############################################# Generators 
+
+### How it works
+
+- if you call a function with generators it actually returns an generator object 
+
+
+
+
+concurrent.futures is Python batteries included way to run 
+many callables concurrently using a pool of worker, either thread or process, High level around future?
+
+ThreadPoolExecutor - best for I/O
+ProcessPoolExecutor - best for CPU-bound
+
+###Future 
+
+- a handle for a task’s eventual result (or exception).
+- future has states: pending -> running -> finished ( with result or exception )
+
+future.result(timeout=None) - return valur or exception
+future.exception() - get exception with out raising
+future.cancel() - cancel if not yet started 
+future. add done call back - call back when finished ( runs in thread that sets the result - often the main thread)
+
+
+submit + as completed -> flexible; handle each task individually, collect as they finish do per task
+try/except, timeout
+
+why a pool?
+- spinning up a new thread or process for every task is expensive 
+- start up cose ( create the worker, allocate stack/memory, import modules )
+- resource limits ( you dont want 10,000 os threads)
+
+A pool solves this by
+1. pre creating N workers ( configured by max_workers )
+2. Keepting a task queue
+3. scheduling submitted callables onto idle workers as capicity allows
+4. reusing woekers for many task
+5. handling result, exception, timeouts, cancellation for  you

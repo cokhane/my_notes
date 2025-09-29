@@ -45,29 +45,17 @@ You are tasked with designing a microservice architecture for a high-traffic e-c
 14. Create a REST API that allows users to add, retrieve, and delete user data stored in memory. The API should handle errors for invalid operations gracefully.
 
 
-Introduction and background of participants.
-Overview of the company "Overproof" and its services.
-Discussion on software development experiences and preferences.
-Technical discussion on APIs and ETL processes.
-Daily routine and task management using tools like Notion and Jira.
-Communication preferences and the importance of meetings in the workplace.
-Handling difficult conversations with management regarding project timelines and code issues.
-Exploration and use of AI tools in current and past projects.
-Server issues and the need for urgent attention to a problem.
+15. Technical discussion on APIs and ETL processes.
+
+16. Handling difficult conversations with management regarding project timelines and code issues.
+17. Server issues and the need for urgent attention to a problem.
+how to convert a MONOLYTHIC to microservice approace
 
 
-###############################################################################################  INTERVIEW QUESTION 2
-
-
-Design an efficient caching mechanism for the ReactJS frontend that reduces the number of requests made to the Python backend.
+18. Design an efficient caching mechanism for the ReactJS frontend that reduces the number of requests made to the Python backend.
 Integrate a real-time data processing pipeline using AWS Lambda functions and Amazon Kinesis Data Streams to process large amounts of user-generated data.
 Implement authentication and authorization mechanisms using Amazon Cognito User Pools and IAM roles to ensure secure access to the application's resources.
 Design an automated CI/CD pipeline that uses AWS CodePipeline, AWS CodeBuild, and AWS CodeCommit to automate testing, building, and deployment of the application.
-
-
-*Constraints:*
-
-
 The ReactJS frontend must use a state management library other than Redux (e.g., MobX or React Query).
 The Python backend must be deployed behind an Amazon API Gateway that uses Route 53 for DNS resolution.
 The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which will handle the deployment of infrastructure resources.
@@ -76,7 +64,7 @@ The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which 
 ############################################################################################### ANSWER BELOW
 
 
-1.
+###1.
 
 #Memory optimization
 - use generators and iterators instead of loading all data into memory at once 
@@ -93,7 +81,7 @@ Leverage NumPy/pandas vectorization - these libraries use optimized C implementa
 - use cache systems like redis
 - early termination, when task is achieve break out loops
 
-2. 
+###2. 
 
 Service layer pattern - separate business logic from views:
 Dependency injection - use factories and dependency containers to make components testable and loosely coupled.
@@ -116,7 +104,7 @@ XSS protection by sanitizing user input and using Content Security Policy header
 Asynchronous task processing using Celery for heavy operations.
 
 
-3.
+###3.
 
 - i would use asnycronous programming
 

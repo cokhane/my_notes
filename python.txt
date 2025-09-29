@@ -1,0 +1,11 @@
+############################################# Python Interface module 
+
+- is a collection of method signatures that should be provided by the implementing class.
+- in py interface is defined using python class statements and is a subclass of interface. 
+- interface.Interface which is the parent interface for all interface
+
+
+############################################# Cpython uses stackbased virtual machine 
+
+- python uses heap to store long data 
+- then the stack reference them to the heap

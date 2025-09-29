@@ -1,0 +1,34 @@
+############################################# Orders of Growth
+
+O(1) Constant
+0(log n) Logarithmic
+O(n) Linear
+O(n log n) Linear  arithmic  
+O(n2) Quadratic
+O(n3) Cubic
+O(2n) Exponential
+O(n!) Factorial
+
+############################################# O(n2)
+
+- usually a for loop with nested is considered O(n2)
+
+############################################# O(n3)
+
+
+############################################# Logarithm
+
+- how many time do i multiply a base by itself to get a target number?
+
+formally if a^b = x, then log_a(x) = b
+
+ ex. base(10) 10^3 = 1000 => log10(1000) = 3
+
+ so log is how many time do i need to multiply myseft to achieve the ANSWER
+
+ log2(32) = 5 because 
+ 2x1= 2= 1
+ 2x2 = 4 = 2
+ 2x4 = 8 = 3
+ 2x8 = 16 = 4
+ 2x16 = 32 = 5
