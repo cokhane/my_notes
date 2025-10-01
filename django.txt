@@ -1,0 +1,172 @@
+@admin.register 
+- register your model to a django admin
+
+1. Opt-in exposure 
+- djangp doesnt auto-expose every model in your database. you explicitly register only
+what you want staff to change.
+
+
+
+
+#django project
+- the whole site 
+- holdes your global settings, url, routes an config
+
+
+
+
+#django app
+- a self-contained component that does one specific job ( users, blog, shop )
+- has its own models, views, templates, test
+
+
+
+
+################################################## API
+
+POST /admin/products/product/add/
+
+
+
+################################################## Built-in
+
+###django.contrib.admin
+- registers model in admin.py with model admin
+
+- you can turn on 2fa via django-all-auth/Social Auth or SSO
+
+
+###django.contrib.auth
+- use for authentication
+- decorators like @login_required; permission checks for views & DRK
+- password hasging
+
+
+###djago.contrib.conttenttypes
+
+- enables generic relation. link a model to any model via content type
+- useful for logs, comments, attachments
+-
+
+###djngo.contrib.sessions
+- flast message framework
+= great for server rendered flows
+
+###django.contrib.staticfiles
+- static asset handling in dev
+#bestpractice
+- serve via CDN, s3
+
+
+##################################################  DRF 
+
+
+
+
+
+- toolkit to build api
+	- serializers
+	- viewsets
+	- routes
+	- auth
+	- throttling
+
+###corsheader
+- must be first in middleware just after security middle ware
+
+###django_extensions
+- developer convenience
+ex.
+- python manage shell_plus( auto-import models)
+- graph_models to draw ER diagrams
+- runscript for one-off scripts
+
+
+################################################## Learning 
+
+###Two style of building api
+
+- Function based view
+	- you can decorate a plain function with @api_view
+	- cons, you must handle everything manually, unless you add them,
+
+
+- Class base generic views
+	- you subclass drks api view ( listAPIView, RetrieveAPIView)
+	- Handles GET/POST automatically
+	- Built-in pagination
+	- Built-in filterting/search/orderhooks
+	- Easier to extend with custom methods
+
+
+
+
+### context 
+is just a python dictionary of data that list your view send to the template so it can render dynamic HTML
+
+
+
+### Detail View
+- a built in django view designed to show the details of a single database record.
+
+
+### LoginRequiredMixin
+- forces user to login before they can access this view
+
+
+### InlinePDFUploadForm
+
+- it parses the submitting fields 
+- validate
+- expose clean value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

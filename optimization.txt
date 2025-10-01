@@ -1,0 +1,34 @@
+################################################## ###
+
+how Python lists actually work (the mental model)
+
+Dynamic array: a list is a resizable array. Appending is amortized O(1) because Python over-allocates capacity.
+
+Indexing: lst[i] is O(1).
+
+Insert/delete in the middle or front: O(n) (everything after moves).
+
+Slice copy: lst[a:b] creates a new list (O(k) where k = b-a).
+
+Concatenation: a + b makes a new list (O(len(a)+len(b))).
+
+quick big-O cheat sheet for lists
+
+append, pop() at end → amortized O(1)
+
+insert(0, x), pop(0) → O(n) (use collections.deque for fast left operations)
+
+extend(iterable) → O(m) (adds m items; faster than for x in ...: append(x))
+
+in (membership) → O(n) (for big lookups, use a set/dict)
+
+
+when lists aren’t the right tool
+
+Lots of append/pop-left? → collections.deque
+
+Numeric heavy work? → NumPy arrays (vectorized C loops)
+
+Need uniqueness/membership? → set
+
+Maintain sorted order with many inserts? → bisect or a heap

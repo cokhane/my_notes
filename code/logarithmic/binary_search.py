@@ -43,5 +43,3 @@ then we go back the top of the loop which is step 3
 
 
 '''
-
-def binary_search_recursive(n: list, target: int)
