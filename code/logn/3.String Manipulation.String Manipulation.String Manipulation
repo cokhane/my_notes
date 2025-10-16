@@ -1,0 +1,35 @@
+3.String Manipulation
+Write a Python function that takes a string as input and returns the string reversed.
+
+Example:Input: "hello"
+Output: "olleh"
+Enter your answer
+4.List Processing
+Write a Python function that takes a list of integers and returns a new list containing only the even numbers.
+
+Example:
+Input: [1, 2, 3, 4, 5, 6]
+Output: [2, 4, 6]
+
+
+Anagram Checker
+ Write a Python function to check if two strings are anagrams of each other.
+ Two words are anagrams if they contain the same characters in a different order.
+
+Example:
+Input: "listen", "silent"
+Output: True
+
+Constraints: 
+ 
+ Ignore spaces and case sensitivity. 
+ 
+ Return False if either string is empty.
+
+Enter your answer
+6.Matrix Spiral Traversal
+ Write a Python function that takes a 2D matrix as input and returns a list of its elements in spiral order.
+
+ Example:
+Input:[ [1, 2, 3], [4, 5, 6], [7, 8, 9]]
+Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]
