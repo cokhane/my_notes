@@ -1,0 +1,18 @@
+############################################# Whats in it for you?
+
+### Use Case 
+- notifying users about a news latter using EC2, SNS and S3
+
+### steps to create an EC2 instance
+
+- Choosing an AMI 
+- Choosing an instance type 
+- configure instance
+- adding storage 
+- adding tags 
+- configuring security groups 
+- review 
+
+Using Sns to notify users
+linking ec2 and s3
+

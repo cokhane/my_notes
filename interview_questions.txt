@@ -67,5 +67,11 @@ The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which 
 
 22. when to use no sql and my sql
 
+23. stateless vs stateful
+
+24. when to use mongo vs relational 
+
+25. what is indexing
+
 ############################################################################################### ANSWER BELOW
 

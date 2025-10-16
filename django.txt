@@ -123,13 +123,18 @@ is just a python dictionary of data that list your view send to the template so 
 
 
 
+################################################## FORM 
+
+### Form submit with redirect 
+- a normal page with a form and "Save" button page reload is okay
 
 
 
 
+################################################## GENERIC VIEW 
 
-
-
+### Template View
+- best for static pages
 
 
 

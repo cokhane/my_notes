@@ -15,3 +15,51 @@
 - promotes code reusability
 
 - _protected, __private
+
+
+############################################# __init 
+
+- it doesnt create the object 
+- it initialized the object toy get as self
+- it must return None
+
+### Why it matters 
+- define required data 
+- Validate input: raise early error if something is off
+
+class Temperature:
+    def __init__(self, celsius: float):
+        if celsius < -273.15:
+            raise ValueError("below absolute zero")
+        self.celsius = celsius
+
+
+#############################################
+
+###shopify_service = ShopifyService()
+
+- this creates a singleton instance - meaning we create the object once 
+and reuse it everywhere
+
+- okay so the reason why shopify_service has single_ton is because 
+
+#Reasons 
+- Always the same:your app only talks to ONE shopify store 
+- ready to use: when you import, its already created 
+- efficient: dont create new instance every time 
+- Convenient: just import and use 
+
+
+### Why Signature service doesnt use singleton 
+- Flexible - can create multiple instance 
+- reusable: can use for other PSP keys
+- testable: easy to create test instance 
+- generic: not tied to one specific service
+
+
+
+#############################################
+
+- public method stay stable 
+- internal methods can evolve 
+- you can improve the method without breaking anyones code

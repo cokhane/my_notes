@@ -284,8 +284,10 @@ ViewSets - Large procjet with many model
 
 ### deque
 
+- list removing from front is O(n)
+- enter collection.deque ligthning fast for appending and popping from both ends. O(1) i think
 
 
 
-
+#############################################
 

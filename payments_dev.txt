@@ -1,0 +1,166 @@
+############################################# What is tokenization
+
+- replace sensitive card data into token
+- so it its to reduce PCI scope, lower breach impact, enable card-on-file
+
+### Two major kinds of token
+
+#Gateway/Vault tokens - processor tokens
+- issued by you PSP/payment gateway, stripe, adyen, primer
+- you send card details to the provider directly from the browser/app or via their hosted UI.
+they return a token
+- you charge the customer later using the token, the provider transparently de-tokenize
+behind the scene
+- usually limited to your merchant account with the provider ( not portable across providers )
+
+good for: Fast integration , subscription, retries, upsells, vaulted cards.
+
+- Network Tokens - DPANS 
+
+- issued by the card networks, ( Visa, Mastercard, AmEx) and lifecycle-manage by them 
+- often created via apple/google pay or via network tokenization
+- comes with crpytograms for higher security and often better auth rates 
+
+Scopes: work across participating aquirers more portable, but managed via your processo/acquirer 
+
+Good for: Mobile wallets, reducing declines, long term card on file quality
+
+
+############################################# Typical Flow 
+
+
+### One-time charge with vaul tokenization
+
+FE uses hosted field/SDK to collect cards -> PSP returns one time token or a payment method ID 
+-> backend creates Payment Intent/Charge using that token 
+complete challenge -> PSP confirm -> success
+
+### Save card for later 
+
+Use the PSP client SDK to create a payment metohd and customer -> PSP return reusable tokens tied to customer
+-> you store only customer + payment_method in you DB 
+for subs and one time, you charge using those ID 
+
+### Network 
+
+-> Customer authorize in wallet -> recieved payment token payload ( network token + crpytogram )
+-> pass to PSPl they detokenize/authorize -> 
+
+
+############################################# Where tokenize reduces PCI scope
+
+
+############################################# PCI 
+
+- pci dss is the security standard for handling card data
+- pci sope is every system, person, and process that stores, processes or transmit card holder data
+
+### Why it matters 
+- bigger scope, heavier compliance
+- keep scope small by ensuring apps never touches real card numbers
+
+### Typical Scole levels 
+
+#SAQ A 
+- using hosted checkout/ fields / SDK, numbers never touch your server, only handle tokens 
+
+#SAQ A-EP 
+- your websites pages that host payment fields. you dont see the cards on your server,
+but your site can affect how its collected 
+
+#SAQ D
+- you store them all
+
+
+
+############################################# PAN 
+
+primary account number 
+
+
+############################################# COMMON FE BE FLOW 
+
+FE use SDK -> PSP returns a tokenize token -> it will be use in our backend api to create payment intent -> if approved 
+can be captured later or now. 
+
+
+
+
+############################################# If you want to save the card for later (subscriptions / one-click)
+
+Tokenize → get payment method token.
+Create a Setup/Mandate (CIT once, establishes consent).
+Store only the payment-method ID + non-sensitive card meta (brand, last4, expiry).
+Future charges are MIT (off-session) using that saved token—no PAN ever needed again.
+
+
+############################################# NOTES 
+
+Use idempotency keys on your “create payment” call to prevent double charges on retries.
+
+keep token server side, short lived in session 
+
+### Decide capture stragety per bussiness need:
+
+
+############################################# What is a payment proccessor 
+
+- a payment processor is the compnay that moves your customer payment data to the card network 
+back so you canget approval or decline 
+
+
+### Where is sits 
+
+App chekout -> ( often throught a gateway or PSP SDK ) -> Payment Proccessor -> Card Network -> Bank
+
+
+### What processor actually does 
+- Transmit and formats the authorization request 
+- applies security 
+- handles settlement instruction 
+- returns response code you use for UX/retries/dunning 
+
+
+### Processor vs Gateway vs PSP vs Acquirer 
+
+#Gateway 
+- API tunnel that collects/forward payments 
+
+#Proccerssor 
+- engine that submits transactions to network and handles auth
+
+#PSP 
+-  a bundled solution, that ofter includes, gateway + processor + tokenization + risk tools + dashboard
+
+#Acquirer 
+- the bank that sponsor your merchant account and settles money to you 
+
+
+############################################# Payment proccesor vs orchestrator 
+
+### PSP 
+- give you one set of rails to take payment ( tokenization, auth, capture, refund, fraud tools )
+
+### Ochestrator 
+- sits on top of multiple PSP/aquirers and intelligently routes, retries and management payment acrros them
+through one unified API/UI
+
+
+
+############################################# Tokens 
+
+### Not all tokens are the same 
+
+#Single use tokens
+- if you dont wanna reuse the token
+#Reusable tokens 
+- best for subscription
+
+
+############################################# DTO 
+
+- it is a data transfer object - a simple, serializable object used to move data across processor
+or layer bounderaies.
+
+### Why use a DTO 
+- 

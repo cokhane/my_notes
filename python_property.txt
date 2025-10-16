@@ -1,0 +1,8 @@
+############################################# @property
+
+- is a tool for creating managed attribute in classes
+- @property decorator allows you to define, getter, setter and deleter methods for attributes 
+
+- use property when want to encapsulate logic 
+- properties are useful for validating data, computing attributes, and creating read only or read-write attributes 
+- you should avoid @property when direct access is sufficient

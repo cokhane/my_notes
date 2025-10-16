@@ -1,9 +1,17 @@
+############################################# WATCHING 
+
+freeCodeCamp 1:05/
+
+
 ############################################# Orders of Growth
+
+
 
 O(1) Constant
 0(log n) Logarithmic
 O(n) Linear
 O(n log n) Linear  arithmic  
+-----
 O(n2) Quadratic
 O(n3) Cubic
 O(2n) Exponential
@@ -67,3 +75,56 @@ so log2^8 = 3
 output considered log n
 
 binary search and 0(log n)
+
+
+- so i think if you are reducing the size of the array you can say it is
+
+
+################################## O (n log n) Linear arithmic 
+
+
+### Explanation for nlon a.py
+n = 4 
+
+4/2=2 -> log(1) -> log(2) -> log(3) -> log(4)
+
+nextloop
+
+n=2 
+2/2=1 -> log(1) -> log(2) -> log(3) -> log(4)
+
+- in this problem we want to keep the original value of n so we stored it in y
+- we can see that every time we divide N we still proceed to have another loop inside
+
+the top level loop is O(log n)
+-  log2^4
+-  log2^4 = 2
+- 2^2= 4
+
+- inside the loop we get linear since it grows depending on n 
+
+################################## To understand the complexity of Merge Sort 
+
+
+[6,1,23,3] we usually half them 
+
+mergeSort([6,1]) mergeSort([23,3])
+
+mergeSort([6]) , mergeSort([1]) , mergeSort([23]) , mergeSort([3])
+
+
+Log2^=4
+2^2 = 4 
+meaning we will have 2 levels or recursion
+
+since every level needs to touch the merege of function which is O(n)
+
+which is ( n * log n)
+0(4 * Log2^4)
+O(4 * 2 )
+
+meaning for every level which is 2 
+we need to
+
+
+################################## fib & exponential complexity 
