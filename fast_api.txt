@@ -1,0 +1,21 @@
+
+
+server_default: Set this value automatically when creating a new row 
+onupdate: Set this value automatically when updating a row
+
+
+
+############################################# What is Query?
+
+- is A FastApi def add validation to query parameters ( the part after ? in a URL )
+
+### Without Query 
+-  User can send limit=-10, can send limit = 99999
+- no validation 
+
+### With Query 
+- (limit: int = Query(100, ge=1, le=250)):
+- this limit must be between 1 and 250 
+- default if not provided use 100
+- auto error message 
+- better API documentation

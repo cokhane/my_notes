@@ -45,117 +45,33 @@ You are tasked with designing a microservice architecture for a high-traffic e-c
 14. Create a REST API that allows users to add, retrieve, and delete user data stored in memory. The API should handle errors for invalid operations gracefully.
 
 
-Introduction and background of participants.
-Overview of the company "Overproof" and its services.
-Discussion on software development experiences and preferences.
-Technical discussion on APIs and ETL processes.
-Daily routine and task management using tools like Notion and Jira.
-Communication preferences and the importance of meetings in the workplace.
-Handling difficult conversations with management regarding project timelines and code issues.
-Exploration and use of AI tools in current and past projects.
-Server issues and the need for urgent attention to a problem.
+15. Technical discussion on APIs and ETL processes.
 
+16. Handling difficult conversations with management regarding project timelines and code issues.
+17. Server issues and the need for urgent attention to a problem.
+how to convert a MONOLYTHIC to microservice approace
 
-###############################################################################################  INTERVIEW QUESTION 2
-
-
-Design an efficient caching mechanism for the ReactJS frontend that reduces the number of requests made to the Python backend.
+18. Design an efficient caching mechanism for the ReactJS frontend that reduces the number of requests made to the Python backend.
 Integrate a real-time data processing pipeline using AWS Lambda functions and Amazon Kinesis Data Streams to process large amounts of user-generated data.
 Implement authentication and authorization mechanisms using Amazon Cognito User Pools and IAM roles to ensure secure access to the application's resources.
 Design an automated CI/CD pipeline that uses AWS CodePipeline, AWS CodeBuild, and AWS CodeCommit to automate testing, building, and deployment of the application.
-
-
-*Constraints:*
-
-
 The ReactJS frontend must use a state management library other than Redux (e.g., MobX or React Query).
 The Python backend must be deployed behind an Amazon API Gateway that uses Route 53 for DNS resolution.
 The CI/CD pipeline must be designed to integrate with AWS CloudFormation, which will handle the deployment of infrastructure resources.
 
+19. having vs where
+
+20. join vs subquery 
+
+21. when to use django or fast api
+
+22. when to use no sql and my sql
+
+23. stateless vs stateful
+
+24. when to use mongo vs relational 
+
+25. what is indexing
 
 ############################################################################################### ANSWER BELOW
-
-
-1.
-
-#Memory optimization
-- use generators and iterators instead of loading all data into memory at once 
-- implement lazy evaluation- only computer what you need when you need it 
-- memory mapping allows you to access file contents without loading everything on RAM
-
-Leverage NumPy/pandas vectorization - these libraries use optimized C implementations that can be 10-100x faster than pure Python loops for numerical operations.
-
-- for cpu bound use multiprocess
-- for i/o you async or multithread
-- better concurent code writing technique like divide them in chunks
-
-- improve algorithm
-- use cache systems like redis
-- early termination, when task is achieve break out loops
-
-2. 
-
-Service layer pattern - separate business logic from views:
-Dependency injection - use factories and dependency containers to make components testable and loosely coupled.
-Repository pattern for data access abstraction, making it easier to test and switch data sources.
-
-#Auth
-JWT with refresh tokens for stateless authentication:
-Role-based access control (RBAC) with decorators:
-
-#request
-Input validation like marshmallow 
-Rate limiting to prevent abuse:
-
-#Security Measures
-CORS configuration:
-SQL injection prevention using parameterized queries and ORM query builders.
-XSS protection by sanitizing user input and using Content Security Policy headers:
-
-#Scalability
-Asynchronous task processing using Celery for heavy operations.
-
-
-3.
-
-- i would use asnycronous programming
-
-Primary Libraries:
-
-asyncio: Built-in Python async framework
-aiohttp: Async HTTP client/server library
-httpx: Modern alternative to requests with async support
-
-Supporting Libraries:
-
-tenacity: Retry logic with exponential backoff
-prometheus-client: Metrics and monitoring
-fastapi: Async web framework for APIs
-
-Performance: Parallel execution reduces total response time
-Scalability: Non-blocking I/O allows handling more concurrent requests
-Resilience: Circuit breakers and retries handle service failures gracefully
-Resource Efficiency: Async I/O uses fewer threads than synchronous approaches
-
-
-5.
-Move heavy computations to separate worker processes that run independently from the main application.
-i would use celery for this task with redis
-
-
-7.
-
-I'd use Python's built-in asyncio library, leveraging the async and await keywords to handle many concurrent I/O-bound tasks. This approach allows the application to perform other work while waiting for slow operations like network requests or database queries to complete, rather than blocking and wasting CPU cycles.
-
-
-
-12.
-- Consistent Naming Conventions 命名
-- Proper Use of HTTP Verbs ✅
--  Standardized Data Format and Structure 📜
-- Clear and Consistent Error Handling 
-- API Versioning
-- Enable Filtering, Sorting, and Pagination 
-- Documentation as a Deliverable
-- testing
 

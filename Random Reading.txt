@@ -1,0 +1,293 @@
+
+
+############################################# What is Non Blocking I/O?
+
+What is blocking 
+- a function is blocking if it has to wait for something to complete.
+every function is blocking. no matter if its i/o or cpu task capable of delaying 
+execution of task
+
+- if a function is blocking, it is
+
+
+#what is a thread
+- it is a smallest unit of execution within a process
+- a process can have multiple thread running simutaneously, sharing the same memory
+but executing independently. this allows for multi tasking 
+and parallel execution, improvimg performance in apps 
+
+
+#process in python 
+- is an independent instance of a program running in memory
+- it has its own memory space, resource and execution state
+
+
+#process vs thread
+- process does not share variiable with other processes
+- thread shares memory space within process, which makes communication 
+ez but can lead to problem like race condition
+
+
+#Use of cpu cores in programming 
+- modern processer have multiple cores, allowing them to handle 
+multiple task simutanouely, improving perfomance
+
+
+#understanding cpu cores
+- a cpu core is an independent process unit within a processor than can execute instruction.
+a single core cpu processes one task at a time. while multi core can execute multiple task
+
+
+#how cpu cores used in programming 
+
+
+- multi threading uses multiple threads within a single process, however due to python
+global interpreter lock, true parallel execution is limited 
+
+
+- multi processing: spawns multi processes that run independenlty on differect cpu cores
+
+############################################# TIME COMPLEXITY 
+- measure the runtime of algorithm increases as the input of size
+
+
+
+############################################# Charactheristics of agile
+
+- work is broken into small deliverables like psrint to enable continous improvement
+
+#Common agile framework for teams
+
+- scrum: teams work in short time-boxed sprint 1-4weeks
+
+- kanban - a visual workflow system that manages task dynamically
+
+#for interviews 
+
+- what working methodology do you use?
+	- i am use to scrum, usually 2 weeks scrum to deliver something
+	usuallt 5-10 daily standup
+
+
+	why scrum?
+	- increase transperancy and adaptability
+	- encourages collaboration between teams and stakeholders
+	- delivers working sotfware faster
+
+
+
+
+
+############################################# architecture ############################################# 
+
+- kafka is an event bus 
+
+
+#what is microservices
+
+- It’s about team velocity, risk isolation, and production control—not cool architecture diagrams.
+
+#when should you use microservice
+
+- your team is to big for 1 codebase
+- your deployments takeforever
+- you need different tech stack for different services
+
+#
+
+
+
+############################################# PYTHON #############################################
+
+
+
+ ############################################# “Can you explain how Python manages memory?” 
+
+- python handles memory automatically using a private heap ( you dont need to allocate or free memory the interpretter takes care of it) space
+- Python tracks everything using reference counting 
+	- every object in python keeps a count of how many reference are pointing to it
+- Pyton has a built in garbage collector
+	- it also handles something tricky like circular references
+
+- divides object into generation
+	- new object goes to gen 0
+		- if they survive garbage collection they got to gen 1
+		then gen 2
+
+	- short lives objects are collected often. long live object are collected less
+
+
+- you can manually control garbage collection too
+
+
+- show that you understand the impact on performance
+	- good memory management helps apps run faster and more efficiently 
+	- if your codes create too many objects and stays on the memory your app will slow down
+
+	- if you create ciculare reference. you could use up memory and will lead to memory leak
+
+
+- sys.getrefcount() check the ref count 
+
+
+############################################# 8 Python Hacks to Instantly Level Up Your Coding Skills
+
+- list comprehension for cleaner code 
+- use enumerate for indexed loop
+- unpacking multiple variable
+- f string for efficient formatiing 
+- lambda functions for short, anonymous function
+- use generartors for large data handling
+
+
+############################################# Programming Principles They Don’t Teach You In School
+
+
+############################################# List vs. Set
+
+#Use a list when 
+	- we need to keep order
+	- we have duplicates
+	- we just need indexing
+
+#Use a set when 
+	- we only care about membership checks
+	- we need fast lookups
+	- we need unique items only
+
+
+############################################# When to Use APIView, Generics, or ViewSets in Django REST Framework
+
+### Introduction: Why Views Even Matter
+
+- in DRF, a view is the middleman. it thakes HTTP request, calls logic, runs serializer, sends back response
+but there are 5 different ways to do it.
+	- FBV
+	- APIView
+	- GenericAPIView + Mixins
+	- Concreate Generic Views
+	- ViewSets + Router
+
+### FBV
+- good for prototype
+- you are bound to repeat code across multiple function,
+- FBVs are the training wheels of Django REST Framework. Great for balance, terrible for speed.
+
+
+### APIView
+- it wont save you from boiler plater, you'll still be writing the same serializer validation,
+queryset lookups, and repetitive code. for every endpoint. 
+
+#When its good?
+- custom endpoints that dont map to CRUD ( login,logout, analytic, webhook handlers )
+
+### GenericAPIView + Mixins
+- get_queryset(), get_serializer_class()
+- built-in hooks for pagination, filteringm lookups
+
+on its own it doesnt actually do much
+#Enter mixin
+- ListModelMixin - GET all
+- CreateModelMixin - POST
+- RetieveModelMixin -> GET single
+- UpdateModelMixin -> PUT/PATCH
+- DestroyModelMixin -> DELETE
+
+#Pros
+- GenericAPI + Mixins are great if you like granular control and dont mind peicing thing together
+
+- but mose of the time, you dont need to bother - because DRK already ships with pre-assembled furniture
+
+
+### Concrete Generic Views: The Sweet Spot
+
+- best choice?
+
+- ListAPIView - GET all
+- CreateAPIView - POST
+- RetrieveAPIView - Get one
+- UpdateAPIView - PUT/PATCH
+- DestroyAPIView - DELETE
+
+#Combo
+ListCreateAPIView
+RetrieveUpdateAPIView
+RetrieveDestroyAPIView
+RetrieveUpdateDestroyAPIView
+
+- less magic than view set
+- way less boiler plater than APIView
+- still flexible override a method if you need custsomer behavior
+
+
+###ViewSets
+
+GET /books/ → list all
+POST /books/ → create
+GET /books/{id}/ → retrieve one
+PUT/PATCH /books/{id}/ → update
+DELETE /books/{id}/ → destroy
+
+#Cons 
+- if you tweak URL, Override behavior, Suddenly youre fighting URL,
+- debugging is hard
+- route is hard to find
+
+
+
+
+#### When to use when
+
+FBV - quick hack, prototype
+APIVIEW - custom non-CRUD endpoints
+GenericAPIView + Mixins - fine-grained control, custom based classes
+Concreate Generics - Standard CRUD 90%
+ViewSets - Large procjet with many model
+
+############################################# Django Background Work Explained: From Threads to Celery
+
+### Why background task are a must 
+
+1. user experrience
+2. reliability
+	- can retry failed jobs
+	- 
+3. scalability
+	-  10,000 people sign up after your product goes viral. Without background workers, your app server will crawl to a halt—or worse, crash under the load.
+4. separation of concerns
+
+############################################# 7 Architecture Mistakes Even Senior Engineers Make (And How to Fix Them)
+
+
+1. Overengineering for Scale That Never Comes
+- scaling early is a problem if you dont have yet
+
+2. Choosing Cool Tech Over the Right Tech
+
+
+
+############################################# I Wasted 2 Years Using Python Lists Wrong…
+
+
+### python set is much faster
+
+### List are not queue
+- thats an 0(n)
+- you should try collection import deque
+
+### use list comprehension
+- is faster than c level
+
+
+############################################# 9 Python Data Structures I Wish I Mastered Earlier
+
+
+### deque
+
+- list removing from front is O(n)
+- enter collection.deque ligthning fast for appending and popping from both ends. O(1) i think
+
+
+
+#############################################
+
