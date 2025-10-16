@@ -188,7 +188,7 @@ interrupeted to allow another task to run concurrently
 
 
 
-#MULTITHREADING DANGES
+#MULTITHREADING DANGERS
 
 - writing multhitreaded code is difficult
 	- preemptive - we dont know exactly when a thread will be interrupted

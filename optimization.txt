@@ -1,0 +1,18 @@
+
+
+
+##################################################
+
+- dicts are heavy compare to a list of tuples.
+
+
+################################################## While 
+
+- while patterns do a bit more python-level work each iteration than the best for patterns 
+
+##################################################  NOTES
+
+- prefer for with range/enumerate for indexed loops
+- use "for x in iterable" when ever you can. it delegates to the iterator protocol in C
+
+- if you use while, hoist invariants and prebind

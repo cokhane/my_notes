@@ -1,0 +1,183 @@
+budget 
+
+
+5k luv hulog 
+15k landers
+3k edna
+bigas ulam 4k
+10k pms with baon ko sa motor
+
+37k walang hulog kay anti
+
+
+
+#####AXE EVERY 30
+
+
+	OCT TO FEB ( PAID )
+	ilaw: 15 
+	tubig: 30
+	
+	before -----/ after -------
+	ilaw: 11798 / 13870 = 2072 * 15 = 31080
+	ilaw2:  8021 / 8565 = 544 * 15 = 8160
+	tubig1:  425 / 685 = 260 * 35 = 9800
+	rent: 3000 * 6 = 18000
+	total = 67040
+
+
+	MARCH ( PAID )
+	before -----/ after -------
+	ilaw: 13870 / 14507 = 637 * 15 = 9555
+	ilaw2:  8565 / 8716 = 151 * 15 = 2265
+	tubig1:  685 / 690 = 5 * 35 = 175
+	rent: 3000 
+	total = 14995
+
+
+	APRIL AND MAY ( PAID )
+	before -----/ after -------
+	ilaw: 14507 / 15219 = 712 * 15 = 10680
+	ilaw2:  8716 / 8844 = 128 * 15 = 1920
+	tubig1:  500 / 515 = 15 * 35 = 525
+	rent: 3000 
+	total = 16125
+
+
+	JUNE ( WALA PA )
+
+
+
+	AUG ( PAID )
+	before -----/ after -------
+	ilaw 8948 / 8998 - 50 * 15 = 750
+	ilaw 480 /  496 - 16 * 15 -
+	tubig 520/ 530 - 10 * 35 = 350
+	rent: 3000
+
+
+	SEP 
+	before -----/ after -------
+	ilaw 8998 / 9033 - 35 * 15 = 750
+	ilaw 496 /  593 - 97 * 15 = 1455
+	tubig 530/ 540 - 10 * 35 = 350
+	tubig2 44 = 44 x 35 - 1540 ( tubig ha taas namu )
+	rent: 3000 + 4095
+	total = 7095
+
+
+####BAKERY 
+
+MAR 18
+
+
+	ilaw: 16
+	tubig: 40
+	
+	before -----/ after -------
+	ilaw: 6668 / 7224 = 556 * 16 = 8896
+	tubig1:  289 / 308 = 19 * 40 = 760
+	tubig2:  209 / 231 = 22 * 40 = 880
+	rent: 18000
+	total = 28536
+
+
+APRIL 18
+
+	ilaw: 16
+	tubig: 40
+	
+	before -----/ after -------
+	ilaw: 7224 / 7814 = 590 * 16 = 9440
+	tubig1:  308 / 327 = 19 * 40 = 760
+	tubig2:  231 / 250 = 19 * 40 = 760
+	rent: 18000
+	total = 28960
+
+
+MAY 18
+
+	ilaw: 16
+	tubig: 40
+	
+	before -----/ after -------
+	ilaw: 7814 / 8444 = 590 * 16 = 9440
+	tubig1:  327 / 346 = 19 * 40 = 760
+	tubig2:  250 / 270 = 19 * 40 = 760
+	rent: 18000
+	total = 28960
+
+
+JUNE 18
+
+	law: 16
+	tubig: 40
+
+	before -----/ after  -----
+	ilaw: 8444 / 9096 = 652 * 16 = 10432
+	tubig: 346 / 366  = 20 * 40 = 800
+	tubig2: 270 / 290  = 20 * 40 = 800
+	rent: 18000 + 12032
+	total: 30032
+
+
+JULY 18
+
+	law: 16
+	tubig: 40
+
+	before -----/ after  -----
+	ilaw: 9096 / 9252 = 156 * 16 = 2496
+	tubig: 366 / 384  = 18 * 40 = 720
+	tubig2: 290 / 310  = 20 * 40 = 800
+	rent: 18000 + 4466
+	total: 22466
+
+
+AUGUST 18 (wrong calculation ) 2880 balance
+	
+	NORMAL READING
+
+	law: 16
+	tubig: 40
+
+	before -----/ after  -----
+	ilaw: 9252 / 9682 = 610 * 16 = 9760
+	tubig: 384 / 405  = 21 * 40 = 840
+	tubig2: 310 / 330  = 20 * 40 = 800–
+	rent: 18000 + 11400
+	total: 29400
+
+
+	PANANG METHOD
+
+
+	5172/18 = 287
+
+
+SEPT 
+	
+	NORMAL READING
+
+	law: 16
+	tubig: 40
+
+	before -----/ after  -----
+	ilaw: 9682 / 0528 (10528) = 846 * 16 = 13536
+	tubig: 405 / 426  = 21 * 40 = 840
+	tubig2: 330 / 352  = 22 * 40 = 880
+	rent: 18000 + 15256
+	total: 33256 - 2880 ( mali reading last month ) = 30376
+
+
+	PANANG METHOD
+
+
+	5172/18 = 287
+
+
+
+
+
+
+

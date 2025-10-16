@@ -1,0 +1,12 @@
+- if you have a multiple thread running we wanted to have structured way of getting in and out of the data 
+
+ okay so imagine if i have list of 5 numbers 
+ and i have a 3 threads running. now each of the threads will process its number let say it will find its hex number 
+
+ let say t1 process 0, t2 process 1, t3 process 2 
+ if t1 is finish it should process 3
+ 
+ so let say we use a counter for this in which we add 1 if we finish it so that we know the the next index that we would want 
+
+ but since thread is unpredictable because of the scheduler imagine t1,t2,t3 manage to finish at the same time now 
+ we are skipping index
