@@ -177,6 +177,28 @@ SEPT
 
 
 
+OCT 
+	
+	NORMAL READING
+
+	law: 16
+	tubig: 40
+
+	before -----/ after  -----
+	ilaw: 0528 / 0528 (10528) = 846 * 16 = 13536
+	tubig: 426 / 426  = 21 * 40 = 840
+	tubig2: 352 / 352  = 22 * 40 = 880
+	rent: 18000 + 15256
+	total: 
+
+
+	PANANG METHOD
+
+
+	5172/18 = 287
+
+
+
 
 
 
