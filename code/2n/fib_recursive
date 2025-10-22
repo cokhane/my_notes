@@ -1,0 +1,29 @@
+def fib(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    
+    return fib(n-1) + fib(n-2)
+
+
+print(f"fibonacci: {fib(10)}")
+
+'''
+why this is exponential
+
+                                        fib(4)
+                                          |   
+                            fib(4-1) --------------------- fib(4-2)                  2=2^1 = 2
+                            fib(3)                            fib(2) 
+                                |                                   |
+                    fib(3-1) ------- fib(3-2)       fib(2-2) --------------- fib(2-1)    2=2^2 =  4
+                    fib(2)           fib(1)         fib(0)                    fib(1)
+                     |
+            fib(2-1)-----fib(2-2)
+
+
+look at the tree structure its exponential
+
+
+'''

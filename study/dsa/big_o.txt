@@ -14,8 +14,7 @@ O(n log n) Linear  arithmic
 -----
 O(n2) Quadratic
 O(n3) Cubic
-O(2n) Exponential
-O(n!) Factorial
+ 
 
 ############################################# O(n2)
 
@@ -128,3 +127,15 @@ we need to
 
 
 ################################## fib & exponential complexity 
+
+
+
+################################## O(n!)
+
+- look at the code in factorial/f.py 
+
+if you put f(3) the out put for displaying "*****" will be 6 times look at the image/exponential_sample_1
+
+
+
+################################## Space complexity and mistake
