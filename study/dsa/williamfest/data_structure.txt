@@ -1,0 +1,89 @@
+4:22 /13:66
+
+ ############################################# What is a data structure 
+
+- it is a way of organizing data so that it can be used effectively
+- so you organize data so that later on access, query or updated quickly and easily
+
+
+### Why are they important 
+
+- they are essential for creating fast and powerful algoritms
+- they help manage and organize data
+- make code cleaner nad easier to understand 
+
+
+### Abstrat Data types vs Data Structure 
+
+#ADT 
+
+- is an abstraction of a data structure which provides only the interface to which
+a data structure must adhere to 
+
+- the interface does not give any specific details about how something 
+should be implemented or in what programming language 
+
+
+#Analogy 
+
+we have a mode of transportation to get to point A to B 
+choosing the mode of transportation.
+
+"we want to go to A to B by the choosing the transportation" = ADT 
+"how did we do it" = DT
+
+
+### Example of ADT VS DS 
+
+#Abstraction(ADT)            Implentation(DS)
+- list          -------- Dynamic Array,Linked list
+- queue ---------------- Linked List based Queue, Array based queue, Stack based Queue
+- map ------------------ Tree Map, Hasp Map / Hast Table 
+- vehicle ---------------- Golf Cart, Bicycle, Smart Car
+
+
+Dynamic Array,Linked list - they both provide, adding, removing, indexing 
+
+queue, map - implement in a variety of ways 
+
+
+############################################# Computational Complexity Analysis
+
+- to understand the perfomance the DSA are providing 
+- how much time does this algorithm need to finish 
+- how much space does this algorithm need for its 
+
+
+### Big-O notation 
+- this cares only the worst case , helping to quantify perfomance as the input size becomes arbitrarily large.
+
+#Growth
+
+O(1) - constant
+O(logn) - logarithmic 
+O(n) - linear 
+O(nlogn) - linearithmic
+
+---
+O(n2) - quadratic 
+O(n3) - cubic 
+O(2n) or O(b^n)- exponential
+O(n!) - factorial
+
+### Big-O properties 
+
+- big o only care if your info gets really big  
+
+ex. of constant 
+
+for i range(11):
+    print('hey') 
+
+constant since the range is 11 not dependent on n 
+
+ex. o(n) 
+
+for i in range(n):
+    print(i)
+
+- this is linear since i dependeng on N

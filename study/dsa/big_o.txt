@@ -14,7 +14,9 @@ O(n log n) Linear  arithmic
 -----
 O(n2) Quadratic
 O(n3) Cubic
- 
+O(2n) exponential
+O(n!) Factorial
+   
 
 ############################################# O(n2)
 

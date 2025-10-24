@@ -1,0 +1,50 @@
+############################################# Nameservers
+
+- its the phone book of the internet
+
+when you see something like xxx.com your browser doenst actually understand andyou.ph its need ip
+
+
+### Where nameservers fit in DNS chain 
+
+DNS ( domaain name systen ) the system that translate names like xxx.com to and IP address
+
+1. you type xxx.com2
+2. browser ask you ISP. who knows where xxx.com lives?
+3. ISP checks the root DNS server. they point to .phone
+4. ph server says "ask these name server. ns1.cloudflare.com, ns2.cloudfare2.com" 
+5. those name servers finally says HERE is the IP
+
+then browser connect to it
+
+so name servers are the authorative source for your domain DNS records
+
+
+### GoDaddy vs cloudflare
+
+- both can act as a DNS provider but they do it at different layers 
+
+###GoDaddy
+
+- is your domain registrar ( where you buy your domain )
+- by default, when you register a domain, go daddy gives you their own nameservers, like NS01, domaincontrol.com
+
+You can store DNS records (a,cname,mx,txt,etc) inside goDaddys DNS panel
+
+so if you keep GoDaddys nameserver, you manege your DNS from goDaddys
+
+
+###Cloudflare
+
+- can also act as your DNS Host (and much more - CDN, security, caching etc)
+- when you add your domain to Cloudflare, Cloudflare will give you new nameserver 
+
+ada.ns.cloudflare.com 
+jack.ns.cloudflare.com
+
+to make cloudflare take control. you must go back to go Daddy, and change your nameserver to cloudflare ones 
+once you do that go daddy will stop controlling your DNS so now cloudflare nameserver at the authority
+
+
+
+###Why you want to transfer to go daddy to cloudflare
