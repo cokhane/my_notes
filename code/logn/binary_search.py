@@ -1,28 +1,28 @@
-import math
-def binary_search_not_sorted(n: list, target: int):
-    start = 0
-    end = len(n)-1
+# import math
+# def binary_search_not_sorted(n: list, target: int):
+#     start = 0
+#     end = len(n)-1
     
-    while start <= end:
-        mid = math.floor((start+end)/2)
+#     while start <= end:
+#         mid = math.floor((start+end)/2)
 
-        print('mid: ', mid)
+#         print('mid: ', mid)
 
-        if n[mid] == target:
-           return mid
+#         if n[mid] == target:
+#            return mid
         
-        if n[mid] < target:
-           start = mid + 1
+#         if n[mid] < target:
+#            start = mid + 1
            
-        else:
-            end = mid - 1 
+#         else:
+#             end = mid - 1 
 
-        print('mid value : ',n[mid])
-        print('target : ',target)
-        print('start: ',start)
-        print('end: ',end)
+#         print('mid value : ',n[mid])
+#         print('target : ',target)
+#         print('start: ',start)
+#         print('end: ',end)
 
-    return -1 
+#     return -1 
 
 
 # print("binary_search: ", binary_search_not_sorted([1,2,7,12,43,44,44,54,100,124],7))
@@ -43,3 +43,68 @@ then we go back the top of the loop which is step 3
 
 
 '''
+
+
+
+"""
+
+"""
+
+def binary_search_not_sorted_axe(nlist, target):
+    start = 0
+    end = len(nlist)-1
+    
+
+    i = 0
+    while start <= end:
+        mid = (start+end)/2  
+
+        print(mid)
+        print(nlist[mid])
+
+        return 'axe'   
+        # if nlist[mid] == target:
+        #     if mid < target:
+
+     
+
+
+
+
+
+
+print(f"binary: {binary_search_not_sorted_axe([1,2,7,12,43,44,44,54,100,124],7)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

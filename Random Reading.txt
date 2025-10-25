@@ -289,5 +289,15 @@ ViewSets - Large procjet with many model
 
 
 
-#############################################
+############################################# Inside Django’s DNA: Deconstructing the Architecture That Powers Instagram and Pinterest
 
+- instagram process over 95 million photos daily
+- pinterest handles 200 billion pins
+
+
+### Breakdown
+
+- MVT vs MVC for web apps
+
+
+### The foundation Djangos Architectural Philospy

@@ -1,0 +1,13 @@
+
+
+############################################# Thread
+
+
+
+
+
+############################################# cooperative multi tasking 
+
+- What we want is we can run a task that can run in our critical faces only wait on the task if its external resource - this is called
+- simple and inexpensive form of concurrency
+- in an application where we control everything we can go with major wins
