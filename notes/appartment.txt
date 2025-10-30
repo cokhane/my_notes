@@ -58,12 +58,22 @@ bigas ulam 4k
 
 	SEP 
 	before -----/ after -------
-	ilaw 8998 / 9033 - 35 * 15 = 750
+	ilaw 8998 / 9033 - 35 * 15 = 790 
 	ilaw 496 /  593 - 97 * 15 = 1455
 	tubig 530/ 540 - 10 * 35 = 350
 	tubig2 44 = 44 x 35 - 1540 ( tubig ha taas namu )
 	rent: 3000 + 4095
 	total = 7095
+
+	OCT 
+	before -----/ after -------
+	ilaw 9033 / 9079 - 46 * 15 = 690 - 125(sobra reading last time) = 525
+	ilaw 593 /  681 - 88 * 15 = 1320
+	tubig 540/ 550 - 10 * 35 = 350
+	tubig2 44/47 = 3 x 35 - 105 ( tubig ha taas namu )
+	rent: 3000 + 2465
+	total = 5465
+
 
 
 ####BAKERY 

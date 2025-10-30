@@ -57,15 +57,25 @@ def binary_search_not_sorted_axe(nlist, target):
 
     i = 0
     while start <= end:
-        mid = (start+end)/2  
+        mid = int((start+end)/2)  
 
-        print(mid)
-        print(nlist[mid])
+        print(f"mid: {mid}")
+        print(f"start: {start}")
+        print(f"end: {end}")
+        print('--------------:')
 
-        return 'axe'   
-        # if nlist[mid] == target:
-        #     if mid < target:
+        if nlist[mid] == target:
+            return mid
+        elif nlist[mid] < target:
+            start = mid + 1
+        elif nlist[mid] > target:
+            end = mid - 1
 
+        print('new value:')
+        print(f"start: {start}")
+        print(f"end: {end}")
+    
+    return -1 
      
 
 
@@ -73,7 +83,7 @@ def binary_search_not_sorted_axe(nlist, target):
 
 
 
-print(f"binary: {binary_search_not_sorted_axe([1,2,7,12,43,44,44,54,100,124],7)}")
+print(f"binary: {binary_search_not_sorted_axe([1,2,7,12,43,44,44,54,100,124],12)}")
 
 
 

@@ -9,3 +9,20 @@
 
 - python uses heap to store long data 
 - then the stack reference them to the heap
+
+
+############################################# range vs enumerate 
+
+### range
+
+- you only care about the index not the value 
+- you need to modify values in place
+- you dont actually have a list your loop loop n times,
+
+- can cause bug sine you keep doing arr[i]
+
+### enumerate 
+-  you care for both index and value
+- for reading not mutating,
+    inspecting, logging , comparing , validating
+

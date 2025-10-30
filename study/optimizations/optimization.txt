@@ -16,3 +16,18 @@
 - use "for x in iterable" when ever you can. it delegates to the iterator protocol in C
 
 - if you use while, hoist invariants and prebind
+
+- TypeError: 'set' object is not subscriptable
+
+
+- if you create a set in a nested loop it will be slower,
+it will create new set every single time.
+
+- any filtering inside a loop add to o(m)
+
+- each restart process up to n elements again
+
+################################################## when set is good
+
+- removing duplicates 
+- for large numbers

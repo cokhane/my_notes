@@ -301,3 +301,20 @@ ViewSets - Large procjet with many model
 
 
 ### The foundation Djangos Architectural Philospy
+
+
+############################################# How shopify handles 30tb of Data every minute with a monolithic architecture 
+
+- written on ruby on rails 
+
+### Hexagonal Architecture / Ports and Adapter pattern
+
+# read about debezium and kafka
+
+Read about 
+
+edge caching, background queues, graceful degradation
+
+############################################# Solving Double Booking at Scale: System Design Patterns from Top Tech Companies
+
+Solving Double Booking at Scale: System Design Patterns from Top Tech Companies

@@ -19,3 +19,108 @@ onupdate: Set this value automatically when updating a row
 - default if not provided use 100
 - auto error message 
 - better API documentation
+
+
+
+############################################# what is parent_subscription = relationship("Subscription", remote_side=[id], backref="child_subscriptions")
+
+- allows subscription to have parent-child relationships.
+
+# User starts with Basic plan
+basic_sub = Subscription(
+    id=1,
+    solidgate_product_id=1,  # Basic Plan
+    parent_subscription_id=None
+)
+
+# User upgrades to Premium
+premium_sub = Subscription(
+    id=2,
+    solidgate_product_id=2,  # Premium Plan
+    parent_subscription_id=1  # Links to basic_sub
+)
+
+# Access relationships:
+premium_sub.parent_subscription  # Returns basic_sub
+basic_sub.child_subscriptions    # Returns [premium_sub]
+
+
+
+
+Needed for self-referential relationships
+Tells SQLAlchemy: "The parent is identified by id"
+Without it: SQLAlchemy doesn't know which side is parent/child
+
+
+# Get all children
+parent.child_subscriptions  # List of child Subscription objects
+
+# Get parent
+child.parent_subscription  # Single parent Subscription object
+
+# Get all subscription history
+def get_subscription_chain(sub):
+    chain = [sub]
+    parent = sub.parent_subscription
+    while parent:
+        chain.insert(0, parent)
+        parent = parent.parent_subscription
+    return chain
+
+
+############################################# Pydantic 
+
+### What does this do?
+
+class Config:
+    from_attributes = True
+
+- this tell Pydantic you can create this model from an objects attribute ( Like SQLAlchemy models, not just some dictionaries  )
+
+#it solves this problem 
+
+    class Config:
+        from_attributes = True ( this enables ORM mode)
+
+#it will fail since
+- pydantic expects dictionary(**dict)
+- SQLAlchemy returns an object with attributes, can unpack an object like dictionary
+
+#this happens internally
+#without the from_attributes
+# Pydantic tries this:
+CustomerSchema(**customer_db)  # Tries to unpack as dict
+# Equivalent to:
+CustomerSchema(id=???, email=???, ...)  # Can't find dict keys!
+
+#with from_attributes  = true 
+CustomerSchema(
+    id=customer_db.id,           # ✅ Reads attribute
+    email=customer_db.email,     # ✅ Reads attribute
+    first_name=customer_db.first_name  # ✅ Reads attribute
+)
+
+
+- so for short when unpacking, you need keys if you do **unpack, but since SQL alchemy returns object it cannot unpack it
+
+TYPE | Access Method | **Unpacking works | from_attributes needed 
+dict   obj["key"]      Yes                 No 
+obj    obj.attributes  no                 yes
+
+
+
+############################################# ShopifyProduct.deleted_at.is_(None) what does this do?
+
+- it says find records where deleted_at is NULL
+
+
+### Wrong way ShopifyProduct.deleted_at == None
+
+
+############################################# Depends 
+
+- will not work for dependency injection if called via FUNCTION it should be an endpoint
+
+
+
+############################################# @contextmanager
